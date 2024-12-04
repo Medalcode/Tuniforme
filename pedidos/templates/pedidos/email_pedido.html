@@ -1,0 +1,31 @@
+<!-- pedidos/templates/pedidos/email_pedido.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirmación de pedido</title>
+</head>
+<body>
+    <!-- Título del correo -->
+    <h1>Confirmación de pedido</h1>
+    
+    <!-- Saludo al usuario -->
+    <p>Hola {{ usuario }},</p>
+    
+    <!-- Agradecimiento por el pedido -->
+    <p>Gracias por tu pedido. Aquí están los detalles:</p>
+    
+    <!-- Número de pedido -->
+    <h2>Pedido #{{ pedido.id }}</h2>
+    
+    <!-- Lista de detalles del pedido -->
+    <ul>
+        {% for detalle in detalle_pedido %}
+            <!-- Detalle del producto en el pedido -->
+            <li>{{ detalle.cantidad }} x {{ detalle.producto.nombre }} - ${{ detalle.producto.precio }}</li>
+        {% endfor %}
+    </ul>
+    
+    <!-- Total del pedido -->
+    <p>Total: ${{ pedido.total }}</p>
+</body>
+</html>

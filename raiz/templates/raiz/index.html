@@ -1,0 +1,80 @@
+{% extends 'raiz/base.html' %}
+{% load static %}
+
+{% block title %}Inicio - Uniformes Escolares{% endblock %}
+
+{% block content %}
+
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head><script src="/docs/5.3/assets/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Encuentra los mejores uniformes escolares para niños, niñas y adolescentes.">
+    <meta name="author" content="Uniformes Escolares Team">
+    <title>Tienda de Uniformes Escolares · Bootstrap v5.3</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/product/">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <link href="/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <meta name="theme-color" content="#FF69B4">
+
+    <link href="product.css" rel="stylesheet">
+  </head>
+  <body>
+    
+
+<main>
+  <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
+    <div class="col-md-6 p-lg-5 mx-auto my-5" style="background-image: url('{% static "raiz/img/uni_estilo.jpg" %}'); background-size: cover; background-position: center;">
+    <h1 class="display-3 fw-bold text-white">Encuentra tu uniforme perfecto</h1>
+    <h3 class="fw-normal text-white mb-3">Uniformes escolares de muy buena calidad para niños, niñas y adolescentes.</h3>
+      <div class="d-flex gap-3 justify-content-center lead fw-normal">
+        <a class="icon-link btn btn-primary" href="#">Explorar colección</a>
+        <a class="icon-link btn btn-outline-secondary" href="#">Ofertas especiales</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+    <div class="text-bg-primary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden" style="background-image: url('{% static "raiz/img/uni_port.jpg" %}'); background-size: cover; background-position: center;">
+        <div class="my-3 py-3">
+        <h2 class="display-5">Uniformes Escolares</h2>
+        <p class="lead">Calidad y comodidad para el día a día escolar.</p>
+      </div>
+      <div class="bg-body-tertiary shadow-sm mx-auto" ></div>
+    </div>
+    <div class="text-bg-primary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden" style="background-image: url('{% static "raiz/img/uni_nina.jpg" %}'); background-size: cover; background-position: center;">
+        <div class="my-3 p-3">
+        <h2 class="display-5">Uniformes para Niñas</h2>
+        <p class="lead">Elegancia y comodidad para las niñas.</p>
+      </div>
+      <div class="bg-dark shadow-sm mx-auto" ></div>
+    </div>
+  </div>
+
+  <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3" >
+    <div class="text-bg-primary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden" style="background-image: url('{% static "raiz/img/uni_nino.jpg" %}'); background-size: cover; background-position: center;">
+        <div class="my-3 p-3">
+        <h2 class="display-5">Uniformes para Niños</h2>
+        <p class="lead">Resistencia y estilo para los niños.</p>
+      </div>
+      <div class="bg-dark shadow-sm mx-auto"></div>
+    </div>
+    <div class="text-bg-primary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden" style="background-image: url('{% static "raiz/img/uni_adol.jpg" %}'); background-size: cover; background-position: center;">
+        <div class="my-3 py-3">
+          <h2 class="display-5">Uniformes para Adolescentes</h2>
+          <p class="lead">Estilo y comodidad para los adolescentes.</p>
+        </div>
+        <div class="bg-body-tertiary shadow-sm mx-auto" ></div>
+      </div>
+  </div>
+</main>
+
+<script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>
+{% endblock %}

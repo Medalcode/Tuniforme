@@ -1,0 +1,50 @@
+<!-- usuario/templates/usuario/perfil.html -->
+{% extends 'raiz/base.html' %}
+{% load static %}
+
+{% block title %}Perfil de Usuario{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Perfil de Usuario</h2>
+    <!-- Formulario para actualizar perfil de usuario -->
+    <form method="post" action="{% url 'nsusuario:actualizar_perfil' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="email">Correo electrónico:</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+        </div>
+        <div class="form-group">
+            <label for="first_name">Nombre:</label>
+            <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}">
+        </div>
+        <div class="form-group">
+            <label for="last_name">Apellido:</label>
+            <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}">
+        </div>
+        <div class="form-group">
+            <label for="phone">Teléfono:</label>
+            <input type="text" class="form-control" id="phone" name="telefono" value="{{ user.telefono }}">
+        </div>
+        <div class="form-group">
+            <label for="address">Dirección:</label>
+            <input type="text" class="form-control" id="address" name="direccion" value="{{ user.direccion }}">
+        </div>
+        <div class="form-group">
+            <label for="region">Región:</label>
+            <input type="text" class="form-control" id="region" name="region" value="{{ user.region }}">
+        </div>
+        <div class="form-group">
+            <label for="comuna">Comuna:</label>
+            <input type="text" class="form-control" id="comuna" name="comuna" value="{{ user.comuna }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+    </form>
+    <!-- Formulario para eliminar cuenta de usuario -->
+    <form method="post" action="{% url 'nsusuario:eliminar_cuenta' %}" class="mt-3">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar Cuenta</button>
+    </form>
+</div>
+
+{% endblock %}

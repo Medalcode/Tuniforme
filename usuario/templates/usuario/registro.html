@@ -1,0 +1,75 @@
+{% extends 'raiz/base.html' %}
+{% load static %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+<!-- usuario/templates/usuario/registro.html -->
+<link rel="stylesheet" href="{% static 'usuario/css/estilo_login.css' %}">
+
+<div class="modal modal-sheet position-static d-block bg-body-secondary p-4 py-md-5" tabindex="-1" role="dialog" id="modalSignin">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header p-5 pb-4 border-bottom-0">
+        <h1 class="fw-bold mb-0 fs-2">Registrate</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body p-5 pt-0">
+        <form action="{% url 'nsusuario:registro' %}" method="post" onsubmit="return validarRut()">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Registrarse</button>
+          <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
+          <hr class="my-4">
+          <h2 class="fs-5 fw-bold mb-3">O tambien puedes ...</h2>
+          <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" type="button">
+            <svg class="bi me-1" width="16" height="16"><use xlink:href="#twitter"></use></svg>
+            Sign up with Twitter
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function calcularVerificador(numero) {
+    let sum = 0;
+    let mul = 2;
+
+    for (let i = numero.length - 1; i >= 0; i--) {
+      sum += parseInt(numero.charAt(i)) * mul;
+      mul = (mul % 7 === 0) ? 2 : mul + 1;
+    }
+
+    const res = sum % 11;
+    if (res === 0) {
+      return '0';
+    } else if (res === 1) {
+      return 'K';
+    } else {
+      return (11 - res).toString();
+    }
+  }
+
+  function validarRut() {
+    const rut = document.getElementById('id_rut').value.toUpperCase().replace("-", "").replace(".", "");
+    const rutAux = rut.slice(0, -1);
+    const dv = rut.slice(-1);
+
+    if (!/^\d+$/.test(rutAux) || !(1000000 <= parseInt(rutAux) <= 25000000)) {
+      alert('RUT inválido');
+      return false;
+    }
+
+    const dvEsperado = calcularVerificador(rutAux);
+    if (dv === dvEsperado) {
+      return true;
+    } else {
+      alert('RUT inválido');
+      return false;
+    }
+  }
+</script>
+{% endblock %}

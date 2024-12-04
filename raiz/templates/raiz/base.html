@@ -1,0 +1,147 @@
+<!-- raiz/templates/raiz/base.html -->
+{% load static %}
+
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Estilos globales -->
+    <!-- raiz/static/raiz/css/estilo_global.css -->
+    <link rel="stylesheet" href="{% static 'raiz/css/estilo_global.css' %}">
+    <!-- Estilos de la página principal -->
+    <!-- raiz/static/raiz/css/estilo_home.css -->
+    <link rel="stylesheet" href="{% static 'raiz/css/estilo_home.css' %}">
+    <!-- Estilos de hover -->
+    <!-- raiz/static/raiz/css/hover.css -->
+    <link rel="stylesheet" href="{% static 'raiz/css/hover.css' %}">
+    <title>{% block title %}Base{% endblock %}</title>
+  </head>
+
+  <body>
+    {% block navbar %}
+    <!-- Estilos del carrusel -->
+    <!-- raiz/static/raiz/css/estilo_carrusel.css -->
+    <link rel="stylesheet" href="{% static 'raiz/css/estilo_carrusel.css' %}">
+    
+    <!-- Logo -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+      <symbol id="aperture" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"/>
+      </symbol>
+      <!-- Icono del carro -->
+      <symbol id="cart" viewBox="0 0 16 16">
+        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+      </symbol>
+    </svg>
+    <!-- Navbar -->
+    <!-- raiz/templates/raiz/base.html -->
+    <nav class="navbar navbar-expand-md bg-dark sticky-top border-bottom" data-bs-theme="dark">
+      <h5 style="text-align: left; margin: 0;">Bienvenido</h5>
+      <div class="container">
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
+          <div class="offcanvas-body">
+            <ul class="navbar-nav flex-grow-1 justify-content-between">
+              <li class="nav-item"><a class="nav-link" href="#">
+                <svg class="bi" width="24" height="24"><use xlink:href="#aperture"/></svg>
+              </a></li>
+              <!-- Enlaces de navegación -->
+              <li class="nav-item"><a class="nav-link" href="{% url 'nsraiz:index' %}">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'nsraiz:contacto' %}">Contacto</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'nstienda:tienda' %}">Tienda</a></li>
+              {% if not user.is_authenticated %}
+                  <!-- Mostrar solo cuando el usuario no esté autenticado -->
+                  <li class="nav-item"><a class="nav-link" href="{% url 'nsusuario:login' %}">Login</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{% url 'nsusuario:registro' %}">Registro</a></li>
+              {% else %}
+                  <!-- Dropdown de perfil solo cuando el usuario esté autenticado -->
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Perfil </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{% url 'nsusuario:perfil' %}">Perfil de Usuario</a></li>
+                      {% if user.is_staff %}
+                      <li><a class="dropdown-item" href="{% url 'pedidos:reporte_pedidos' %}">Reportes</a></li>
+                      {% endif %}
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="{% url 'nsusuario:logout' %}">Cerrar Sesión</a></li> 
+                    </ul>                 
+                  </li>
+                  <!-- Icono del carro -->
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'carro:fin_pedido' %}">
+                      <svg class="bi" width="24" height="24"><use xlink:href="#cart"/></svg>
+                    </a>
+                  </li>
+                  <!-- Mensaje de bienvenida -->
+                  <li class="nav-item">
+                    <h5>Bienvenid@ {{ user.nombre }}</h5>
+                  </li>
+                {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    {% endblock %}
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- Footer -->
+    {% block footer %}
+    <!-- raiz/templates/raiz/base.html -->
+    <footer class="container py-5">
+      <div class="row">
+        <div class="col-12 col-md">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="d-block mb-2" role="img" viewBox="0 0 24 24"><title>Product</title><circle cx="12" cy="12" r="10"/><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"/></svg>
+          <small class="d-block mb-3 text-body-secondary">&copy; 2017–2024</small>
+        </div>
+        <div class="col-6 col-md">
+          <h5>Features</h5>
+          <ul class="list-unstyled text-small">
+            <li><a class="link-secondary text-decoration-none" href="#">Cool stuff</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Random feature</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Team feature</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Stuff for developers</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Another one</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Last time</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md">
+          <h5>Resources</h5>
+          <ul class="list-unstyled text-small">
+            <li><a class="link-secondary text-decoration-none" href="#">Resource name</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Resource</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Another resource</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Final resource</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md">
+          <h5>Resources</h5>
+          <ul class="list-unstyled text-small">
+            <li><a class="link-secondary text-decoration-none" href="#">Business</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Education</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Government</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Gaming</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md">
+          <h5>About</h5>
+          <ul class="list-unstyled text-small">
+            <li><a class="link-secondary text-decoration-none" href="#">Team</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>
+            <li><a class="link-secondary text-decoration-none" href="#">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    {% endblock %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>

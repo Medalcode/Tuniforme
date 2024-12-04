@@ -1,0 +1,27 @@
+{% extends 'raiz/base.html' %} <!-- tienda/templates/tienda/confirmar_pedido.html -->
+{% load static %}
+
+{% block title %}Tienda{% endblock %}
+
+{% block content %}
+<!-- Cargar el archivo CSS específico de la aplicación tienda -->
+<link rel="stylesheet" href="{% static 'tienda/css/tienda.css' %}"> <!-- tienda/static/tienda/css/tienda.css -->
+
+<section class="layout">
+    <body>
+        <div class="container py-5">
+            <section class="text-center">
+                <!-- Título de la página de confirmación de pedido -->
+                <h1>Confirmacion del pedido</h1>
+
+                <!-- Mensajes de confirmación para el usuario -->
+                <p> Ya esta todo Listo</p>
+                <p> Tu pedido ha sido confirmado y los productos esta en camino a tu Direccion</p>
+                <p> Enviaremos un correo con los detalles de tu pedido</p>
+                <p> Gracias por tu compra</p>
+            </section>
+        </div>
+    </body>
+</section>
+
+{% endblock %}

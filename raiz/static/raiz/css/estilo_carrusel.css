@@ -1,0 +1,77 @@
+/* # raiz/static/raiz/css/estilo_carrusel.css */
+
+/* Estilo del cuerpo */
+body {
+  padding-top: 0;
+  padding-bottom: 3rem;
+  color: rgb(var(--bs-tertiary-color-rgb));
+}
+
+/* Estilo del carrusel */
+.carousel {
+  margin-bottom: 4rem;
+}
+
+/* Estilo de la leyenda del carrusel */
+.carousel-caption {
+  bottom: 3rem;
+  z-index: 10;
+}
+
+/* Estilo de los elementos del carrusel */
+.carousel-item {
+  height: 32rem;
+}
+
+/* Estilo de la sección de marketing */
+.marketing .col-lg-4 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Estilo de los párrafos en la sección de marketing */
+.marketing .col-lg-4 p {
+  margin-right: .75rem;
+  margin-left: .75rem;
+}
+
+/* Estilo del divisor de featurette */
+.featurette-divider {
+  margin: 5rem 0;
+}
+
+/* Estilo del encabezado de featurette */
+.featurette-heading {
+  letter-spacing: -.05rem;
+}
+
+/* Estilos responsivos para pantallas de al menos 40em */
+@media (min-width: 40em) {
+  .carousel-caption p {
+    margin-bottom: 1.25rem;
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+
+  .featurette-heading {
+    font-size: 50px;
+  }
+}
+
+/* Estilos responsivos para pantallas de al menos 62em */
+@media (min-width: 62em) {
+  .featurette-heading {
+    margin-top: 7rem;
+  }
+}
+
+/* Estilo del HTML */
+html {
+  overflow-y: scroll;
+}
+
+/* Estilo de la barra de navegación */
+.navbar {
+  margin: 0;
+  padding: 0;
+}

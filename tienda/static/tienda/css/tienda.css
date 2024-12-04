@@ -1,0 +1,58 @@
+/* tienda/static/tienda/css/tienda.css */
+
+/* Layout principal de la página */
+.layout {
+    width: 100%;
+    display: grid;
+    grid:
+      "head head" 15% /* Área de la cabecera */
+      "tienda carro" 85% /* Área de la tienda y el carrito */
+      / 70% 30%; /* Distribución de columnas */
+}
+
+/* Área de la cabecera */
+.head { grid-area: head; }
+
+/* Área de la tienda */
+.tienda { grid-area: tienda; }
+
+/* Área del carrito */
+.carro { grid-area: carro; }
+
+/* Estilo de la cabecera */
+.head {
+    padding-bottom: 40px; /* Ajusta este valor según sea necesario */
+}
+
+/* Estilo del título en la cabecera */
+.head h1 {
+    margin-bottom: 40px; /* Ajusta este valor según sea necesario */
+}
+
+/* Estilo de las tarjetas de productos */
+.card {
+    margin: 20px 20px;
+    width: 100%;
+}
+
+/* Estilo de las imágenes dentro de las tarjetas */
+.card img {
+    width: 100%;
+    height: auto;
+}
+
+/* Estilo del cuerpo de las tarjetas */
+.card-body {
+    padding: 15px;
+}
+
+/* Estilo del contenedor principal */
+.container {
+    margin-top: 20px;
+}
+
+/* Estilo del carrito */
+.carro {
+    margin-top: 20px;
+}
+

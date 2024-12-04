@@ -1,0 +1,40 @@
+/* # raiz/static/raiz/css/hover.css */
+
+/* Estilo para el contenedor de ítems */
+.c-item {
+  height: 480px;
+}
+
+/* Estilo para las imágenes dentro del contenedor */
+.c-img {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Estilo para los enlaces de navegación */
+nav-link {
+  transition: all 0.2s;
+  position: relative;
+}
+
+/* Estilo para los enlaces de navegación al pasar el ratón */
+.nav-link:hover {
+  border-bottom: 2px solid white;
+}
+
+/* Estilo para las tarjetas */
+.card {
+  transition: all 0.3s;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+/* Efecto de escala al pasar el ratón sobre las tarjetas */
+.card:hover {
+  transform: scale(1.15);
+}
+
+/* Estilo para el cuerpo de las tarjetas */
+.card-body {
+  margin: 10px;
+}

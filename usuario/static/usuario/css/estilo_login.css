@@ -1,0 +1,32 @@
+/* # usuario/static/usuario/css/estilo_login.css */
+
+/* Establece la altura del html y body al 100% */
+html,
+body {
+  height: 100%;
+}
+
+/* Estilo para el formulario de inicio de sesión */
+.form-signin {
+  max-width: 330px;
+  padding: 1rem;
+}
+
+/* Aumenta el índice z cuando el campo de formulario está enfocado */
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+/* Estilo para el campo de entrada de email */
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Estilo para el campo de entrada de contraseña */
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}

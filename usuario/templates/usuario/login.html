@@ -1,0 +1,48 @@
+{% extends 'raiz/base.html' %}
+{% load static %}
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<!-- jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<!-- usuario/templates/usuario/login.html -->
+<!-- Enlace al archivo CSS para estilos de login -->
+<link rel="stylesheet" href="{% static 'usuario/css/estilo_login.css' %}">
+
+<!-- Modal para el formulario de login -->
+<div class="modal modal-sheet position-static d-block bg-body-secondary p-4 py-md-5" tabindex="-1" role="dialog" id="modalSignin">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content rounded-4 shadow">
+      <!-- Encabezado del modal -->
+      <div class="modal-header p-5 pb-4 border-bottom-0">
+        <h1 class="fw-bold mb-0 fs-2">Login</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Cuerpo del modal -->
+      <div class="modal-body p-5 pt-0">
+        <!-- usuario/templates/usuario/login.html -->
+<form method="post">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div>
+      <label for="{{ form.rut.id_for_label }}">RUT:</label>
+      {{ form.rut }}
+  </div>
+  <div>
+      <label for="{{ form.password.id_for_label }}">Contraseña:</label>
+      {{ form.password }}
+  </div>
+  <button type="submit">Iniciar sesión</button>
+</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{
+  "name": "@fdograph/rut-utilities",
+  "version": "1.4.0",
+  "repository": "https://github.com/fdograph/rut-utilities",
+  "description": "Fully typed set of utility functions to parse, validate and generate a Chilean R.U.T. \n Set de funciones utilitarias para generar, procesar y validar un R.U.T. Chileno completamente tipado.",
+  "main": "build/main.js",
+  "types": "build/main.d.ts",
+  "scripts": {
+    "clean": "rimraf coverage build tmp",
+    "build": "tsc -p tsconfig.release.json",
+    "build:watch": "tsc -w -p tsconfig.release.json",
+    "build:prod": "npm run clean && npm run build",
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "jest --coverage && jest-coverage-badges --output './badges'",
+    "test:watch": "jest --watch"
+  },
+  "keywords": [
+    "chile",
+    "chilean",
+    "chileno",
+    "validate",
+    "validar",
+    "validator",
+    "validador",
+    "run",
+    "rut",
+    "r.u.t",
+    "r.u.n",
+    "rut chileno",
+    "cedula",
+    "identidad",
+    "comprobar",
+    "comprobador",
+    "empresas",
+    "dv"
+  ],
+  "author": "Fernando Silva M. (@fdograph)",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.20",
+    "@typescript-eslint/eslint-plugin": "~2.34.0",
+    "@typescript-eslint/parser": "~2.34.0",
+    "eslint": "~7.17.0",
+    "eslint-config-prettier": "~7.1.0",
+    "eslint-plugin-jest": "~24.1.3",
+    "jest": "^26.6.3",
+    "jest-coverage-badges": "^1.1.2",
+    "prettier": "~2.2.1",
+    "rimraf": "~3.0.2",
+    "ts-jest": "^26.4.4",
+    "tslint": "^6.1.3",
+    "typescript": "^4.3.2"
+  }
+}

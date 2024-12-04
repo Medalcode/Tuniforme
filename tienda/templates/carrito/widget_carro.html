@@ -1,0 +1,54 @@
+<!-- carro/templates/carrito/widget_carro.html -->
+<div class="col-md-5 col-lg-4 order-md-last">
+  <h4 class="d-flex justify-content-between align-items-center mb-3">
+    <span class="text-primary">Your cart</span>
+  </h4>
+</div>
+
+<table class="table table-dark table-hover rounded">
+  <thead class="rounded-top">
+    <tr>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th>Subtotal</th>
+      <th>+ / -</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+    {% if request.session.carro and request.session.carro|length > 0 %}
+      {% for key, value in request.session.carro.items %}
+        <tr>
+          <td>{{ value.nombre }}</td>
+          <td>{{ value.cantidad }}</td>
+          <td>${{ value.precio }}</td>
+          <td>
+            <a href="{% url 'carro:agregar' value.producto_id %}" class="btn btn-sm btn-success">+</a>
+            <a href="{% url 'carro:restar' value.producto_id %}" class="btn btn-sm btn-danger">-</a><br/>
+          </td>
+        </tr>
+      {% endfor %}
+    {% else %}
+      <tr>
+        <td colspan="3">
+          <div class="alert alert-danger text-center">
+            <strong>No hay productos en el carro</strong>
+          </div>
+        </td>
+      </tr>
+    {% endif %}
+  </tbody>
+  <tfoot class="rounded-bottom">
+    <tr>
+      <td colspan="2" class="text-end"><strong>Total:</strong></td>
+      <td><strong>${{ valor_total_carro }}</strong></td>
+    </tr>
+  </tfoot>
+</table>
+<!-- carro/templates/carrito/widget_carro.html -->
+{% if request.session.carro and request.session.carro|length > 0 %}
+  <li class="list-group-item d-flex justify-content-between lh-sm">
+    <div>
+      <a href="{% url 'carro:fin_pedido' %}" class="btn btn-primary">Generar Pedido</a>
+    </div>
+  </li>
+{% endif %}
