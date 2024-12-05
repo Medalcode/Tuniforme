@@ -4,7 +4,7 @@ from django.shortcuts import redirect, get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from carro.appcarro import Carro
 from .models import Pedido, DetallePedido
-from tienda.models import Fabricante, Producto, Cat_Tipo, Cat_Colegio, Cat_Sexo
+from tienda.models import Fabricante, Producto, Cat_Tipo, Cat_Colegio, Cat_Sexo  # Asegúrate de importar Cat_Tipo, Cat_Colegio, Cat_Sexo
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.mail import send_mail
@@ -26,12 +26,13 @@ logger = logging.getLogger(__name__)
 # Limonatura/pedidos/views.py
 
 # views.py
+# views.py
 def reporte_pedidos(request):
     pedidos = Pedido.objects.all()
     detalles = DetallePedido.objects.all()
     fabricantes = Fabricante.objects.all()
     productos = Producto.objects.all()
-    categorias_tipo = Categoria_Tipo.objects.all()
+    categorias_tipo = Cat_Tipo.objects.all()  # Asegúrate de usar Cat_Tipo
 
     # Filtrar por fabricante
     fabricante_id = request.GET.get('fabricante')
@@ -48,8 +49,8 @@ def reporte_pedidos(request):
     # Filtrar por tipo
     tipo_id = request.GET.get('tipo')
     if tipo_id:
-        pedidos = pedidos.filter(detalles__producto__categorias_tipo_id=tipo_id).distinct()
-        detalles = detalles.filter(producto__categorias_tipo_id=tipo_id)
+        pedidos = pedidos.filter(detalles__producto__cat_tipo_id=tipo_id).distinct()  # Asegúrate de usar cat_tipo
+        detalles = detalles.filter(producto__cat_tipo_id=tipo_id)  # Asegúrate de usar cat_tipo
 
     total_pedidos = pedidos.count()
     pedidos_por_cliente = pedidos.values('usuario__nombre').annotate(total=Sum(F('detalles__precio')))
