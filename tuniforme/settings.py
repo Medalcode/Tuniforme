@@ -73,8 +73,7 @@ WSGI_APPLICATION = 'tuniforme.wsgi.application'
 # Configuración de la base de datos
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        engine='django.db.backends.postgresql'
+        default=os.environ.get('DATABASE_URL')
     )
 }
 
