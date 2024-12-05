@@ -199,7 +199,7 @@ def create_transaction(request):
     print(f"Total del carro: {amount}")
 
     # Definir la URL de retorno
-    return_url = "http://127.0.0.1:8000/pedidos/transaction/commit"
+    return_url = "https://tuniforme.onrender.com/pedidos/transaction/commit"  # Actualiza esta línea
 
     # Crear la transacción con Webpay
     try:
