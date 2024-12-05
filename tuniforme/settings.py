@@ -73,10 +73,10 @@ WSGI_APPLICATION = 'tuniforme.wsgi.application'
 # Configuración de la base de datos
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')
+        default=os.environ.get('DATABASE_URL'),
+        engine='django.db.backends.postgresql'
     )
 }
-
 
 # Modelo de usuario personalizado
 AUTH_USER_MODEL = 'usuario.Persona'
