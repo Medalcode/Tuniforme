@@ -10,12 +10,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-6ahwh6vk__&n1+x8nkdiilc5fod#9ur56w1!v-0u*k-is4$+07'
 
 # Modo de depuración
-DEBUG = False
+DEBUG = True
 
 # Hosts permitidos
 ALLOWED_HOSTS = [
     'tuniforme-abdd2c6f4ad4.herokuapp.com',
     'tuniforme.onrender.com',
+    'localhost',
+    '127.0.0.1',
 ]
 
 # Aplicaciones instaladas
