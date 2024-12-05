@@ -157,6 +157,5 @@ TRANSBANK_API_KEY = "597055555532"  # Código de comercio para Webpay Plus en in
 TRANSBANK_API_SECRET = "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C"
 TRANSBANK_ENVIRONMENT = "integration"  # Cambiar a "production" para producción
 # Configuración de Transbank
-TRANSBANK_RETURN_URL = 'https://tuniforme.onrender.com/transbank/return/'
-TRANSBANK_FINAL_URL = 'https://tuniforme.onrender.com/transbank/final/'
-
+TRANSBANK_RETURN_URL = 'https://tuniforme.onrender.com/pedidos/transaction/commit'
+TRANSBANK_FINAL_URL = 'https://tuniforme.onrender.com/pedidos/transaction/final'
