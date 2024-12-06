@@ -92,7 +92,7 @@ def eliminar_cuenta(request):
     if request.method == 'POST':
         user = request.user
         user.delete()
-        messages.success(request, 'Cuenta eliminada exitosamente')
-        return redirect('nsraiz:index')  # Redirige a la página de inicio después de eliminar la cuenta
-    return render(request, 'usuario/perfil.html')  # usuario/templates/usuario/perfil.html
+        # Agrega un mensaje de éxito en el contexto
+        return render(request, 'usuario/perfil.html', {'cuenta_eliminada': True})
+    return render(request, 'usuario/perfil.html')
 

@@ -47,4 +47,11 @@
     </form>
 </div>
 
+<!-- Mostrar mensaje de alerta si la cuenta fue eliminada -->
+{% if cuenta_eliminada %}
+<script>
+    alert("Cuenta eliminada exitosamente");
+</script>
+{% endif %}
+
 {% endblock %}
