@@ -13,6 +13,8 @@ from django.shortcuts import redirect
 #Aqui creamos las vistas de usuario
 
 # usuario/views.py
+from django.contrib import messages
+
 def login_view(request):
     print("Entrando a la vista de login")
     if request.method == 'POST':
@@ -27,6 +29,8 @@ def login_view(request):
             if user is not None:
                 print("Usuario autenticado correctamente")
                 login(request, user)
+                # Agregar mensaje de éxito
+                messages.success(request, 'Inicio de sesión exitoso')
                 # Redirigir al usuario a la tienda después de un inicio de sesión exitoso
                 return redirect('nstienda:index')
             else:

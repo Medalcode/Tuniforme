@@ -45,11 +45,15 @@
   </div>
 </div>
 
-<!-- Mostrar mensaje de alerta si el inicio de sesión fue exitoso -->
-{% if login_exitoso %}
-<script>
-    alert("Inicio de sesión exitoso");
-</script>
+<!-- Mostrar mensaje de alerta si hay un mensaje de éxito -->
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags == 'success' %}
+    <script>
+        alert("{{ message }}");
+    </script>
+    {% endif %}
+  {% endfor %}
 {% endif %}
 
 {% endblock %}
