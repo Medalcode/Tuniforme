@@ -20,6 +20,8 @@ from django.db.models import Sum, F
 import openpyxl
 from django.http import HttpResponse
 from .models import Pedido, DetallePedido
+from django.utils import timezone
+
 
 logger = logging.getLogger(__name__)
 
@@ -75,8 +77,24 @@ def crear_pedido(request):
         # Almacenar el ID del pedido en la sesión
         request.session['pedido_id'] = pedido.id
 
-        # Otras operaciones
-        return redirect('carro:fin_pedido')
+        # Obtener los datos del carrito
+        carro = Carro(request)
+        productos_carro = carro.carro
+
+        # Calcular el valor total del carrito
+        valor_total_carro = sum(Decimal(item['precio']) * item['cantidad'] for item in productos_carro.values())
+
+        # Pasar los datos al contexto de la plantilla
+        context = {
+            'pedido': pedido,
+            'usuario': request.user,
+            'carro': productos_carro,
+            'valor_total_carro': valor_total_carro,
+            'fecha_actual': timezone.now(),
+            'carro_vacio': len(productos_carro) == 0,
+        }
+
+        return render(request, 'carro/fin_pedido.html', context)
     else:
         # Manejo para cuando el usuario no está autenticado
         return redirect('login')
