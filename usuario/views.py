@@ -10,6 +10,8 @@ from django.conf import settings
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 
 #Aqui creamos las vistas de usuario
 
