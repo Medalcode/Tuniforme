@@ -9,11 +9,11 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
 
 #Aqui creamos las vistas de usuario
 
 # usuario/views.py
-from django.contrib import messages
 
 def login_view(request):
     print("Entrando a la vista de login")
@@ -30,7 +30,7 @@ def login_view(request):
                 print("Usuario autenticado correctamente")
                 login(request, user)
                 # Redirigir al usuario a la tienda con un parámetro de éxito en la URL
-                return redirect('nsraiz:index') + '?login_success=1'
+                return HttpResponseRedirect(reverse('nsraiz:index') + '?login_success=1')
             else:
                 print("Error de autenticación")
                 form.add_error(None, 'RUT o contraseña incorrectos')
