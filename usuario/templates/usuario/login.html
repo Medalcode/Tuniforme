@@ -14,6 +14,15 @@
 <!-- Enlace al archivo CSS para estilos de login -->
 <link rel="stylesheet" href="{% static 'usuario/css/estilo_login.css' %}">
 
+<!-- Mostrar mensajes de éxito -->
+{% if messages %}
+  <div>
+    {% for message in messages %}
+      <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
 <!-- Modal para el formulario de login -->
 <div class="modal modal-sheet position-static d-block bg-body-secondary p-4 py-md-5" tabindex="-1" role="dialog" id="modalSignin">
   <div class="modal-dialog" role="document">
