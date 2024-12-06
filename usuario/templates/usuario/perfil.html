@@ -54,4 +54,15 @@
 </script>
 {% endif %}
 
+<!-- Mostrar mensaje de alerta si el perfil fue actualizado -->
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags == 'success' %}
+    <script>
+        alert("{{ message }}");
+    </script>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
 {% endblock %}

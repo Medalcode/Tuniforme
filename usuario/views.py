@@ -73,6 +73,8 @@ def perfil(request):
     return render(request, 'usuario/perfil.html')  # usuario/templates/usuario/perfil.html
 
 #Aqui creamos la vista de actualizar perfil
+
+
 @login_required
 def actualizar_perfil(request):
     if request.method == 'POST':
@@ -88,7 +90,7 @@ def actualizar_perfil(request):
         user.save()
         messages.success(request, 'Perfil actualizado exitosamente')
         return redirect('nsusuario:perfil')  # Redirige a la página de perfil después de actualizar
-    return render(request, 'usuario/perfil.html')  # usuario/templates/usuario/perfil.html
+    return render(request, 'usuario/perfil.html')
 
 #Aqui creamos la vista de eliminar cuenta
 @login_required
