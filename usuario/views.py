@@ -27,7 +27,8 @@ def login_view(request):
             if user is not None:
                 print("Usuario autenticado correctamente")
                 login(request, user)
-                return redirect('nsraiz:index')
+                # Agrega un mensaje de éxito en el contexto
+                return render(request, 'usuario/login.html', {'form': form, 'login_exitoso': True})
             else:
                 print("Error de autenticación")
                 form.add_error(None, 'RUT o contraseña incorrectos')
@@ -38,6 +39,8 @@ def login_view(request):
         print("Método GET recibido")
         form = FormularioAutenticacion()
     return render(request, 'usuario/login.html', {'form': form})
+
+
 
 #Aqui creamos la vista de cerrar sesión
 def logout_view(request):
@@ -52,7 +55,8 @@ def registro_view(request):
         form = FormularioCreacionUsuario(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('nsusuario:login')
+            # Agrega un mensaje de éxito en el contexto
+            return render(request, 'usuario/registro.html', {'form': form, 'registro_exitoso': True})
         else:
             print(f"Errores del formulario de registro: {form.errors}")
     else:

@@ -71,5 +71,10 @@
       return false;
     }
   }
+
+  // Mostrar mensaje de alerta si el registro fue exitoso
+  {% if registro_exitoso %}
+  alert("Registro exitoso");
+  {% endif %}
 </script>
 {% endblock %}
