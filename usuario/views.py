@@ -29,8 +29,10 @@ def login_view(request):
             if user is not None:
                 print("Usuario autenticado correctamente")
                 login(request, user)
-                # Redirigir al usuario a la vista intermedia después de un inicio de sesión exitoso
-                return redirect('usuario:login_success')
+                # Agregar mensaje de éxito
+                messages.success(request, 'Inicio de sesión exitoso')
+                # Redirigir al usuario a la tienda después de un inicio de sesión exitoso
+                return redirect('nsraiz:index')
             else:
                 print("Error de autenticación")
                 form.add_error(None, 'RUT o contraseña incorrectos')
