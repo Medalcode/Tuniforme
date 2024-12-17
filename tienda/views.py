@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from django.views.generic import ListView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Producto, Cat_Colegio, Cat_Tipo, Cat_Sexo
 
 def tienda(request):
-    productos = Producto.objects.all()
+    productos_list = Producto.objects.all()
     categorias_colegio = Cat_Colegio.objects.all()
     categorias_tipo = Cat_Tipo.objects.all()
     categorias_sexo = Cat_Sexo.objects.all()
@@ -15,18 +15,31 @@ def tienda(request):
     categoria_sexo_id = request.GET.get('cat_sexo')
 
     if categoria_colegio_id:
-        productos = productos.filter(cat_colegio_id=categoria_colegio_id)
+        productos_list = productos_list.filter(cat_colegio_id=categoria_colegio_id)
     if categoria_tipo_id:
-        productos = productos.filter(cat_tipo_id=categoria_tipo_id)
+        productos_list = productos_list.filter(cat_tipo_id=categoria_tipo_id)
     if categoria_sexo_id:
-        productos = productos.filter(cat_sexo_id=categoria_sexo_id)
+        productos_list = productos_list.filter(cat_sexo_id=categoria_sexo_id)
 
-    return render(request, 'tienda/tienda.html', {
+    # Implementar paginación
+    paginator = Paginator(productos_list, 4)  # 12 productos por página
+    page = request.GET.get('page')
+
+    try:
+        productos = paginator.page(page)
+    except PageNotAnInteger:
+        productos = paginator.page(1)
+    except EmptyPage:
+        productos = paginator.page(paginator.num_pages)
+
+    context = {
         'productos': productos,
         'categorias_colegio': categorias_colegio,
         'categorias_tipo': categorias_tipo,
         'categorias_sexo': categorias_sexo,
-    })
+    }
+
+    return render(request, 'tienda/tienda.html', context)
 
 def confirmar_pedido(request):
     return render(request, 'tienda/confirmar_pedido.html')
@@ -43,31 +56,4 @@ def comprar_producto(request, producto_id):
         messages.success(request, 'Compra realizada con éxito.')
     else:
         messages.error(request, 'Lo sentimos, este producto está agotado.')
-    return redirect('nstienda:detalle_producto', producto_id=producto.id)
-
-class ProductoListView(ListView):
-    model = Producto
-    template_name = 'tienda/tienda.html'
-    context_object_name = 'productos'
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        categoria_colegio_id = self.request.GET.get('categoria_colegio')
-        categoria_tipo_id = self.request.GET.get('categoria_tipo')
-        categoria_sexo_id = self.request.GET.get('categoria_sexo')
-
-        if categoria_colegio_id:
-            queryset = queryset.filter(cat_colegio_id=categoria_colegio_id)
-        if categoria_tipo_id:
-            queryset = queryset.filter(cat_tipo_id=categoria_tipo_id)
-        if categoria_sexo_id:
-            queryset = queryset.filter(cat_sexo_id=categoria_sexo_id)
-
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['categorias_colegio'] = Cat_Colegio.objects.all()
-        context['categorias_tipo'] = Cat_Tipo.objects.all()
-        context['categorias_sexo'] = Cat_Sexo.objects.all()
-        return context
+    return redirect('tienda:detalle_producto', producto_id=producto.id)
