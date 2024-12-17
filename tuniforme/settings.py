@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'usuario.apps.UsuarioConfig',  # Aplicación usuario
     'carro.apps.CarroConfig',  # Aplicación carro
     'pedidos.apps.PedidosConfig',  # Aplicación pedidos
+    'coreapi.apps.CoreapiConfig',  # Aplicación Coreapi
 ]
 
 # Middleware
