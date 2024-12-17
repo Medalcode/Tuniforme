@@ -1,7 +1,10 @@
-#Limonatura/tuniforme/settings.py: Este archivo contiene la configuración de la aplicación tuniforme
 import os
 from pathlib import Path
 import dj_database_url
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde el archivo .env
+load_dotenv()
 
 # Base directory of the project
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,6 +37,7 @@ INSTALLED_APPS = [
     'carro.apps.CarroConfig',  # Aplicación carro
     'pedidos.apps.PedidosConfig',  # Aplicación pedidos
     'coreapi.apps.CoreapiConfig',  # Aplicación Coreapi
+    'rest_framework',  # Añadir Django REST framework
 ]
 
 # Middleware
@@ -73,12 +77,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'tuniforme.wsgi.application'
 
 # Configuración de la base de datos
-
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')
-               
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': '5432',
+    }
 }
 
 # Modelo de usuario personalizado
@@ -106,8 +113,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# settings.py
-
 # Configuración de archivos estáticos
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -122,14 +127,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Configuración del motor de sesiones
-# settings.py
-
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_SECURE = True  # Para desarrollo; asegúrate de usar True en producción con HTTPS
 SESSION_COOKIE_HTTPONLY = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 1209600  # 2 semanas
-
 
 # URLs de inicio y cierre de sesión
 LOGIN_URL = 'nsusuario:login'
@@ -148,16 +150,15 @@ EMAIL_USE_SSL = False
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directorio de archivos multimedia
 
-
-# settings.py
+# Configuración de autenticación
 AUTHENTICATION_BACKENDS = [
     'usuario.backends.RUTAuthBackend',
     'django.contrib.auth.backends.ModelBackend',  # Opcional para compatibilidad con autenticación por username
 ]
 
+# Configuración de Transbank
 TRANSBANK_API_KEY = "597055555532"  # Código de comercio para Webpay Plus en integración
 TRANSBANK_API_SECRET = "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C"
 TRANSBANK_ENVIRONMENT = "integration"  # Cambiar a "production" para producción
-# Configuración de Transbank
 TRANSBANK_RETURN_URL = 'https://tuniforme.onrender.com/pedidos/transaction/commit'
 TRANSBANK_FINAL_URL = 'https://tuniforme.onrender.com/pedidos/transaction/final'

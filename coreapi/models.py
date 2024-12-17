@@ -1,15 +1,8 @@
-from django.db import models
+# filepath: /C:/Users/forge/Documents/GitHub/Tuniforme/coreapi/serializers.py
+from rest_framework import serializers
+from tienda.models import Producto
 
-# Create your models here.
-
-
-from django.db import models
-
-class Producto(models.Model):
-    nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.IntegerField()
-
-    def __str__(self):
-        return self.nombre
+class ProductoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Producto
+        fields = '__all__'
