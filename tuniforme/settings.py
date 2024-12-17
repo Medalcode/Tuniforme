@@ -25,20 +25,23 @@ ALLOWED_HOSTS = [
 
 # Aplicaciones instaladas
 INSTALLED_APPS = [
-    'django.contrib.admin',  # Aplicación de administración de Django
-    'django.contrib.auth',  # Aplicación de autenticación de Django
-    'django.contrib.contenttypes',  # Tipos de contenido de Django
-    'django.contrib.sessions',  # Sesiones de Django
-    'django.contrib.messages',  # Mensajes de Django
-    'django.contrib.staticfiles',  # Archivos estáticos de Django
-    'raiz.apps.RaizConfig',  # Aplicación raíz
-    'tienda.apps.TiendaConfig',  # Aplicación tienda
-    'usuario.apps.UsuarioConfig',  # Aplicación usuario
-    'carro.apps.CarroConfig',  # Aplicación carro
-    'pedidos.apps.PedidosConfig',  # Aplicación pedidos
-    'coreapi.apps.CoreapiConfig',  # Aplicación Coreapi
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.sites',  # Asegúrate de que esto esté incluido
+    'raiz.apps.RaizConfig',
+    'tienda.apps.TiendaConfig',
+    'usuario.apps.UsuarioConfig',
+    'carro.apps.CarroConfig',
+    'pedidos.apps.PedidosConfig',
+    'coreapi.apps.CoreapiConfig',
     'rest_framework',  # Añadir Django REST framework
 ]
+
+SITE_ID = 1
 
 # Middleware
 MIDDLEWARE = [
@@ -143,6 +146,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'jonatthan.medalla@gmail.com'
 EMAIL_HOST_PASSWORD = 'nanx cvrs crwn gspu'
+DEFAULT_FROM_EMAIL = 'jonatthan.medalla@gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
