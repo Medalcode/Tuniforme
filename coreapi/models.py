@@ -1,4 +1,3 @@
-# filepath: /C:/Users/forge/Documents/GitHub/Tuniforme/coreapi/serializers.py
 from rest_framework import serializers
 from tienda.models import Producto
 
