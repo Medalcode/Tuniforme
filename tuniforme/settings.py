@@ -17,8 +17,6 @@ DEBUG = True
 
 # Hosts permitidos
 ALLOWED_HOSTS = [
-    'tuniforme-abdd2c6f4ad4.herokuapp.com',
-    'tuniforme.onrender.com',
     'localhost',
     '127.0.0.1',
 ]
