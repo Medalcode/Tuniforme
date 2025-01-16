@@ -1,6 +1,6 @@
 branch-defaults:
   main:
-    environment: null
+    environment: tuniforme-env
     group_suffix: null
 global:
   application_name: tuniforme
