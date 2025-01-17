@@ -1,7 +1,6 @@
 branch-defaults:
   main:
     environment: tuniforme-env
-    group_suffix: null
 global:
   application_name: tuniforme
   branch: null
@@ -16,3 +15,4 @@ global:
   repository: null
   sc: git
   workspace_type: Application
+group_suffix: null
