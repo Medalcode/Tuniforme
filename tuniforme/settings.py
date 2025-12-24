@@ -9,14 +9,14 @@ load_dotenv()
 # Base directory of the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Clave secreta para la seguridad de Django
-SECRET_KEY = 'django-insecure-6ahwh6vk__&n1+x8nkdiilc5fod#9ur56w1!v-0u*k-is4$+07'
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-CHANGE-THIS-IN-PRODUCTION')
 
-# Modo de depuración
-DEBUG = True
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Hosts permitidos
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 
 # Aplicaciones instaladas
@@ -76,11 +76,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'tuniforme.wsgi.application'
 
 # Configuración de la base de datos
+# Usa DATABASE_URL si está disponible (PostgreSQL en producción),
+# de lo contrario usa SQLite para desarrollo local
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 # Modelo de usuario personalizado
@@ -136,9 +139,9 @@ LOGOUT_REDIRECT_URL = 'nsraiz:login'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'jonatthan.medalla@gmail.com'
-EMAIL_HOST_PASSWORD = 'nanx cvrs crwn gspu'
-DEFAULT_FROM_EMAIL = 'jonatthan.medalla@gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'your_email@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'your_email@gmail.com')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
@@ -153,8 +156,97 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Configuración de Transbank
-TRANSBANK_API_KEY = "597055555532"  # Código de comercio para Webpay Plus en integración
-TRANSBANK_API_SECRET = "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C"
-TRANSBANK_ENVIRONMENT = "integration"  # Cambiar a "production" para producción
-TRANSBANK_RETURN_URL = 'https://tuniforme.onrender.com/pedidos/transaction/commit'
-TRANSBANK_FINAL_URL = 'https://tuniforme.onrender.com/pedidos/transaction/final'
+TRANSBANK_CONFIG = {
+    'commerce_code': os.getenv('TRANSBANK_API_KEY', '597055555532'),
+    'api_key': os.getenv('TRANSBANK_API_SECRET', '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C'),
+    'environment': os.getenv('TRANSBANK_ENVIRONMENT', 'integration'),
+    'return_url': os.getenv('TRANSBANK_RETURN_URL', 'https://tuniforme.onrender.com/pedidos/transaction/commit'),
+    'final_url': os.getenv('TRANSBANK_FINAL_URL', 'https://tuniforme.onrender.com/pedidos/transaction/final'),
+}
+
+# Security settings for production
+if not DEBUG:
+    # SSL/HTTPS settings
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    
+    # Cookie security
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    
+    # Security headers
+    X_FRAME_OPTIONS = 'DENY'
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+
+# Logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {asctime} {message}',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            'class': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            'class': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'tuniforme.log'),
+            'maxBytes': 1024 * 1024 * 15,  # 15MB
+            'backupCount': 10,
+            'formatter': 'verbose',
+        },
+        'file_error': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'error.log'),
+            'maxBytes': 1024 * 1024 * 15,  # 15MB
+            'backupCount': 10,
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'pedidos': {
+            'handlers': ['console', 'file', 'file_error'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': False,
+        },
+        'tienda': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'usuario': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}

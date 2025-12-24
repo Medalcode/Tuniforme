@@ -1,20 +1,40 @@
-# Usar una imagen base oficial de Python
-FROM python:3.8-slim
+# Dockerfile optimizado para Google Cloud Run
+FROM python:3.11-slim
 
-# Establecer el directorio de trabajo en el contenedor
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PORT=8080
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    postgresql-client \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set work directory
 WORKDIR /app
 
-# Copiar los archivos de requisitos
-COPY requirements.txt requirements.txt
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt gunicorn
 
-# Instalar las dependencias
-RUN pip install -r requirements.txt
-
-# Copiar el resto de los archivos del proyecto
+# Copy project files
 COPY . .
 
-# Exponer el puerto en el que la aplicación correrá
-EXPOSE 8000
+# Create logs directory
+RUN mkdir -p logs
 
-# Comando para correr la aplicación
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "tuniforme.wsgi:application"]
+# Collect static files
+RUN python manage.py collectstatic --noinput || true
+
+# Create a non-root user
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+USER appuser
+
+# Expose port (Cloud Run will inject the PORT env var)
+EXPOSE 8080
+
+# Run gunicorn
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 tuniforme.wsgi:application

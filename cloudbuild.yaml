@@ -1,0 +1,86 @@
+# cloudbuild.yaml - Configuración para Google Cloud Build (CI/CD automático)
+steps:
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "build"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/tuniforme:$COMMIT_SHA"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/tuniforme:latest"
+      - "."
+    timeout: 1200s
+
+  # Push the container image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "push"
+      - "gcr.io/$PROJECT_ID/tuniforme:$COMMIT_SHA"
+
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "push"
+      - "gcr.io/$PROJECT_ID/tuniforme:latest"
+
+  # Run database migrations
+  - name: "gcr.io/google-appengine/exec-wrapper"
+    args:
+      - "-i"
+      - "gcr.io/$PROJECT_ID/tuniforme:$COMMIT_SHA"
+      - "-s"
+      - "${_CLOUD_SQL_CONNECTION_NAME}"
+      - "--"
+      - "python"
+      - "manage.py"
+      - "migrate"
+    env:
+      - "DATABASE_URL=${_DATABASE_URL}"
+      - "SECRET_KEY=${_SECRET_KEY}"
+
+  # Deploy container image to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "tuniforme"
+      - "--image"
+      - "gcr.io/$PROJECT_ID/tuniforme:$COMMIT_SHA"
+      - "--region"
+      - "${_REGION}"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+      - "--set-env-vars"
+      - "SECRET_KEY=${_SECRET_KEY},DEBUG=False,ALLOWED_HOSTS=${_ALLOWED_HOSTS},EMAIL_HOST_USER=${_EMAIL_HOST_USER},EMAIL_HOST_PASSWORD=${_EMAIL_HOST_PASSWORD},TRANSBANK_API_KEY=${_TRANSBANK_API_KEY},TRANSBANK_API_SECRET=${_TRANSBANK_API_SECRET},TRANSBANK_ENVIRONMENT=${_TRANSBANK_ENVIRONMENT},DATABASE_URL=${_DATABASE_URL}"
+      - "--add-cloudsql-instances"
+      - "${_CLOUD_SQL_CONNECTION_NAME}"
+      - "--min-instances"
+      - "0"
+      - "--max-instances"
+      - "3"
+      - "--memory"
+      - "512Mi"
+      - "--cpu"
+      - "1"
+      - "--timeout"
+      - "300"
+
+images:
+  - "gcr.io/$PROJECT_ID/tuniforme:$COMMIT_SHA"
+  - "gcr.io/$PROJECT_ID/tuniforme:latest"
+
+timeout: 1800s
+
+# Substitutions (configurar en Cloud Build triggers)
+substitutions:
+  _REGION: us-central1
+  _CLOUD_SQL_CONNECTION_NAME: your-project:region:instance-name
+  _DATABASE_URL: postgresql://user:password@/dbname?host=/cloudsql/your-project:region:instance-name
+  _SECRET_KEY: your-secret-key
+  _ALLOWED_HOSTS: your-app.run.app
+  _EMAIL_HOST_USER: your-email@gmail.com
+  _EMAIL_HOST_PASSWORD: your-password
+  _TRANSBANK_API_KEY: your-key
+  _TRANSBANK_API_SECRET: your-secret
+  _TRANSBANK_ENVIRONMENT: integration

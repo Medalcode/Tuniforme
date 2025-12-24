@@ -1,0 +1,76 @@
+# .dockerignore - Archivos a ignorar al construir la imagen Docker
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Database
+db.sqlite3
+db.sqlite3-journal
+*.db
+
+# Media files (se deben servir desde Cloud Storage en producción)
+media/
+
+# Static files (se recolectan durante el build)
+staticfiles/
+static/
+
+# Logs
+logs/
+*.log
+
+# Documentation
+README.md
+*.md
+docs/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Otros
+*.bak
+*.tmp
+.cache/
