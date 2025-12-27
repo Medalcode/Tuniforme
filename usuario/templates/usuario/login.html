@@ -1,57 +1,97 @@
 {% extends 'raiz/base.html' %}
 {% load static %}
-<!-- Bootstrap CSS -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<!-- jQuery and Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-{% block title %}Login{% endblock %}
+{% block title %}Iniciar Sesión | Tuniforme{% endblock %}
 
 {% block content %}
-<!-- usuario/templates/usuario/login.html -->
-<!-- Enlace al archivo CSS para estilos de login -->
-<link rel="stylesheet" href="{% static 'usuario/css/estilo_login.css' %}">
-
-<!-- Mostrar mensajes de éxito -->
-{% if messages %}
-  <div>
-    {% for message in messages %}
-      <div class="alert alert-success">{{ message }}</div>
-    {% endfor %}
+<div class="min-h-[calc(100vh-64px)] bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="mx-auto h-12 w-12 rounded-full bg-primary-100 flex items-center justify-center text-2xl">
+      🎓
+    </div>
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      Bienvenido de nuevo
+    </h2>
+    <p class="mt-2 text-center text-sm text-gray-600">
+      ¿No tienes cuenta?
+      <a href="{% url 'nsusuario:registro' %}" class="font-medium text-primary-600 hover:text-primary-500">
+        Regístrate gratis
+      </a>
+    </p>
   </div>
-{% endif %}
 
-<!-- Modal para el formulario de login -->
-<div class="modal modal-sheet position-static d-block bg-body-secondary p-4 py-md-5" tabindex="-1" role="dialog" id="modalSignin">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content rounded-4 shadow">
-      <!-- Encabezado del modal -->
-      <div class="modal-header p-5 pb-4 border-bottom-0">
-        <h1 class="fw-bold mb-0 fs-2">Login</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <form class="space-y-6" method="post">
+        {% csrf_token %}
+        
+        <!-- Mensajes de error globales -->
+        {% if form.non_field_errors %}
+          <div class="rounded-md bg-red-50 p-4">
+            <div class="flex">
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-red-800">Error al iniciar sesión</h3>
+                <div class="mt-2 text-sm text-red-700">
+                  <ul class="list-disc pl-5 space-y-1">
+                    {% for error in form.non_field_errors %}
+                      <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
 
-      <!-- Cuerpo del modal -->
-      <div class="modal-body p-5 pt-0">
-        <!-- usuario/templates/usuario/login.html -->
-<form method="post">
-  {% csrf_token %}
-  {{ form.non_field_errors }}
-  <div>
-      <label for="{{ form.rut.id_for_label }}">RUT:</label>
-      {{ form.rut }}
-  </div>
-  <div>
-      <label for="{{ form.password.id_for_label }}">Contraseña:</label>
-      {{ form.password }}
-  </div>
-  <button type="submit">Iniciar sesión</button>
-</form>
-      </div>
+        <div>
+          <label for="id_rut" class="block text-sm font-medium text-gray-700">
+            RUT
+          </label>
+          <div class="mt-1">
+            <input id="id_rut" name="rut" type="text" autocomplete="username" required 
+                   class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                   placeholder="12345678-9">
+          </div>
+          {% if form.rut.errors %}
+            <p class="mt-2 text-sm text-red-600">{{ form.rut.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div>
+          <label for="id_password" class="block text-sm font-medium text-gray-700">
+            Contraseña
+          </label>
+          <div class="mt-1">
+            <input id="id_password" name="password" type="password" autocomplete="current-password" required 
+                   class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+          </div>
+          {% if form.password.errors %}
+            <p class="mt-2 text-sm text-red-600">{{ form.password.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input id="remember_me" name="remember_me" type="checkbox" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+            <label for="remember_me" class="ml-2 block text-sm text-gray-900">
+              Recordarme
+            </label>
+          </div>
+
+          <div class="text-sm">
+            <a href="{% url 'nsusuario:password_reset' %}" class="font-medium text-primary-600 hover:text-primary-500">
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+            Iniciar Sesión
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
-
 {% endblock %}
