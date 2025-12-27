@@ -1,27 +1,50 @@
-{% extends 'raiz/base.html' %} <!-- tienda/templates/tienda/confirmar_pedido.html -->
+{% extends 'raiz/base.html' %}
 {% load static %}
 
-{% block title %}Tienda{% endblock %}
+{% block title %}Pedido Confirmado | Tuniforme{% endblock %}
 
 {% block content %}
-<!-- Cargar el archivo CSS específico de la aplicación tienda -->
-<link rel="stylesheet" href="{% static 'tienda/css/tienda.css' %}"> <!-- tienda/static/tienda/css/tienda.css -->
+<div class="bg-gray-50 min-h-[calc(100vh-64px)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full text-center">
+    <div class="mx-auto flex items-center justify-center h-24 w-24 rounded-full bg-green-100 mb-8 animate-bounce">
+      <svg class="h-12 w-12 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+    
+    <h2 class="text-3xl font-extrabold text-gray-900 mb-2">
+      ¡Gracias por tu compra!
+    </h2>
+    <p class="text-lg text-gray-600 mb-8">
+      Tu pedido ha sido confirmado exitosamente.
+    </p>
 
-<section class="layout">
-    <body>
-        <div class="container py-5">
-            <section class="text-center">
-                <!-- Título de la página de confirmación de pedido -->
-                <h1>Confirmacion del pedido</h1>
+    <div class="bg-white shadow rounded-lg p-6 text-left mb-8">
+      <h3 class="text-md font-medium text-gray-900 mb-2">¿Qué sigue ahora?</h3>
+      <ul class="space-y-3 text-sm text-gray-500">
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-primary-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          Hemos enviado un correo con los detalles.
+        </li>
+        <li class="flex items-start">
+           <svg class="h-5 w-5 text-primary-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+          Estamos preparando tus productos para el envío.
+        </li>
+      </ul>
+    </div>
 
-                <!-- Mensajes de confirmación para el usuario -->
-                <p> Ya esta todo Listo</p>
-                <p> Tu pedido ha sido confirmado y los productos esta en camino a tu Direccion</p>
-                <p> Enviaremos un correo con los detalles de tu pedido</p>
-                <p> Gracias por tu compra</p>
-            </section>
-        </div>
-    </body>
-</section>
-
+    <div class="space-y-3">
+        <a href="{% url 'nstienda:tienda' %}" class="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+          Seguir comprando
+        </a>
+         <a href="{% url 'nsusuario:perfil' %}" class="w-full flex items-center justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+          Ver mis pedidos
+        </a>
+    </div>
+  </div>
+</div>
 {% endblock %}
