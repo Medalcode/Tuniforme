@@ -30,3 +30,8 @@ db.sqlite3-journal
 *.swp
 *.swo
 *~
+
+# Frontend / Node
+node_modules/
+npm-debug.log
+.DS_Store

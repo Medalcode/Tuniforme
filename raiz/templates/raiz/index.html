@@ -1,80 +1,167 @@
 {% extends 'raiz/base.html' %}
 {% load static %}
 
-{% block title %}Inicio - Uniformes Escolares{% endblock %}
+{% block title %}Tuniforme - Inicio{% endblock %}
 
 {% block content %}
+<!-- Hero Section -->
+<div class="relative bg-white overflow-hidden">
+  <div class="max-w-7xl mx-auto">
+    <div class="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+      <!-- Polygon Background Decoration -->
+      <svg class="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <polygon points="50,0 100,0 50,100 0,100" />
+      </svg>
 
-<!doctype html>
-<html lang="en" data-bs-theme="auto">
-  <head><script src="/docs/5.3/assets/js/color-modes.js"></script>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Encuentra los mejores uniformes escolares para niños, niñas y adolescentes.">
-    <meta name="author" content="Uniformes Escolares Team">
-    <title>Tienda de Uniformes Escolares · Bootstrap v5.3</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/product/">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-    <link href="/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <meta name="theme-color" content="#FF69B4">
-
-    <link href="product.css" rel="stylesheet">
-  </head>
-  <body>
-    
-
-<main>
-  <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
-    <div class="col-md-6 p-lg-5 mx-auto my-5" style="background-image: url('{% static "raiz/img/uni_estilo.jpg" %}'); background-size: cover; background-position: center;">
-    <h1 class="display-3 fw-bold text-white">Encuentra tu uniforme perfecto</h1>
-    <h3 class="fw-normal text-white mb-3">Uniformes escolares de muy buena calidad para niños, niñas y adolescentes.</h3>
-      <div class="d-flex gap-3 justify-content-center lead fw-normal">
-        <a class="icon-link btn btn-primary" href="#">Explorar colección</a>
-        <a class="icon-link btn btn-outline-secondary" href="#">Ofertas especiales</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
-    <div class="text-bg-primary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden" style="background-image: url('{% static "raiz/img/uni_port.jpg" %}'); background-size: cover; background-position: center;">
-        <div class="my-3 py-3">
-        <h2 class="display-5">Uniformes Escolares</h2>
-        <p class="lead">Calidad y comodidad para el día a día escolar.</p>
-      </div>
-      <div class="bg-body-tertiary shadow-sm mx-auto" ></div>
-    </div>
-    <div class="text-bg-primary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden" style="background-image: url('{% static "raiz/img/uni_nina.jpg" %}'); background-size: cover; background-position: center;">
-        <div class="my-3 p-3">
-        <h2 class="display-5">Uniformes para Niñas</h2>
-        <p class="lead">Elegancia y comodidad para las niñas.</p>
-      </div>
-      <div class="bg-dark shadow-sm mx-auto" ></div>
-    </div>
-  </div>
-
-  <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3" >
-    <div class="text-bg-primary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden" style="background-image: url('{% static "raiz/img/uni_nino.jpg" %}'); background-size: cover; background-position: center;">
-        <div class="my-3 p-3">
-        <h2 class="display-5">Uniformes para Niños</h2>
-        <p class="lead">Resistencia y estilo para los niños.</p>
-      </div>
-      <div class="bg-dark shadow-sm mx-auto"></div>
-    </div>
-    <div class="text-bg-primary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden" style="background-image: url('{% static "raiz/img/uni_adol.jpg" %}'); background-size: cover; background-position: center;">
-        <div class="my-3 py-3">
-          <h2 class="display-5">Uniformes para Adolescentes</h2>
-          <p class="lead">Estilo y comodidad para los adolescentes.</p>
+      <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+        <div class="sm:text-center lg:text-left">
+          <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+            <span class="block xl:inline">Uniformes escolares</span>
+            <span class="block text-primary-600 xl:inline">de calidad premium</span>
+          </h1>
+          <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+            Equipa a tus hijos con lo mejor. Telas resistentes, costuras reforzadas y diseños cómodos para que se concentren en aprender, no en su ropa.
+          </p>
+          <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+            <div class="rounded-md shadow">
+              <a href="{% url 'nstienda:tienda' %}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 md:py-4 md:text-lg md:px-10 transition-transform transform hover:-translate-y-0.5">
+                Ver Catálogo
+              </a>
+            </div>
+            <div class="mt-3 sm:mt-0 sm:ml-3">
+              <a href="#categorias" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-primary-700 bg-primary-100 hover:bg-primary-200 md:py-4 md:text-lg md:px-10 transition-transform transform hover:-translate-y-0.5">
+                Categorías
+              </a>
+            </div>
+          </div>
         </div>
-        <div class="bg-body-tertiary shadow-sm mx-auto" ></div>
-      </div>
+      </main>
+    </div>
   </div>
-</main>
+  <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-gray-50 object-cover">
+    <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full" src="https://images.unsplash.com/photo-1503919545885-d3122c4c28bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Niños con uniforme escolar">
+    <div class="absolute inset-0 bg-gradient-to-r from-white via-white/20 to-transparent lg:via-transparent"></div>
+  </div>
+</div>
 
-<script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  </body>
-</html>
+<!-- Features Section -->
+<div class="py-12 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="lg:text-center">
+      <h2 class="text-base text-primary-600 font-semibold tracking-wide uppercase">Calidad Garantizada</h2>
+      <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+        La mejor elección para el año escolar
+      </p>
+      <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+        Nos enfocamos en los detalles para que tú no tengas que preocuparte.
+      </p>
+    </div>
+
+    <div class="mt-10">
+      <dl class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
+        <!-- Feature 1 -->
+        <div class="relative group bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <dt>
+            <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white group-hover:scale-110 transition-transform">
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Durabilidad Extrema</p>
+          </dt>
+          <dd class="mt-2 ml-16 text-base text-gray-500">
+            Telas anti-peeling y colores que resisten lavado tras lavado.
+          </dd>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="relative group bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <dt>
+            <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-secondary-500 text-white group-hover:scale-110 transition-transform">
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Envío Rápido</p>
+          </dt>
+          <dd class="mt-2 ml-16 text-base text-gray-500">
+            Despachos a todo Chile en 24-48 horas hábiles.
+          </dd>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="relative group bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <dt>
+            <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-accent-500 text-white group-hover:scale-110 transition-transform">
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              </svg>
+            </div>
+            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Compra Segura</p>
+          </dt>
+          <dd class="mt-2 ml-16 text-base text-gray-500">
+            Integrado con Webpay Plus. Tus datos siempre protegidos.
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<!-- Categories Section -->
+<div id="categorias" class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl text-center mb-12">
+      Categorías Destacadas
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Niños -->
+      <a href="{% url 'nstienda:tienda' %}?cat_sexo=1" class="group relative rounded-2xl overflow-hidden shadow-lg h-96 transform transition duration-300 hover:scale-[1.02]">
+        <img src="{% static 'raiz/img/uni_nino.jpg' %}" alt="Uniformes Niños" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 p-8">
+          <h3 class="text-3xl font-bold text-white mb-2">Niños</h3>
+          <p class="text-gray-200 mb-4 opacity-0 transform translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+            Resistencia y comodidad para el día a día.
+          </p>
+          <span class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full shadow-sm text-primary-700 bg-white hover:bg-gray-50">
+            Ver Colección
+          </span>
+        </div>
+      </a>
+
+      <!-- Niñas -->
+      <a href="{% url 'nstienda:tienda' %}?cat_sexo=2" class="group relative rounded-2xl overflow-hidden shadow-lg h-96 transform transition duration-300 hover:scale-[1.02]">
+        <img src="{% static 'raiz/img/uni_nina.jpg' %}" alt="Uniformes Niñas" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+         <div class="absolute bottom-0 left-0 p-8">
+          <h3 class="text-3xl font-bold text-white mb-2">Niñas</h3>
+          <p class="text-gray-200 mb-4 opacity-0 transform translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+            Estilo clásico y duradero.
+          </p>
+          <span class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full shadow-sm text-secondary-700 bg-white hover:bg-gray-50">
+            Ver Colección
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="bg-primary-700">
+  <div class="max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
+    <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+      <span class="block">¿Listo para comenzar?</span>
+      <span class="block">Equípate para el año escolar hoy.</span>
+    </h2>
+    <p class="mt-4 text-lg leading-6 text-primary-200">
+      Aprovecha nuestros precios de temporada y no dejes las compras para última hora.
+    </p>
+    <a href="{% url 'nstienda:tienda' %}" class="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-primary-600 bg-white hover:bg-primary-50 sm:w-auto">
+      Ir a la Tienda
+    </a>
+  </div>
+</div>
 {% endblock %}

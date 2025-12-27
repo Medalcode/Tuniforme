@@ -1,134 +1,246 @@
-<!-- filepath: /c:/Users/forge/Documents/GitHub/Tuniforme/tienda/templates/tienda/tienda.html -->
 {% extends 'raiz/base.html' %}
 {% load static %}
 
-{% block title %}Tienda{% endblock %}
+{% block title %}Catálogo de Uniformes | Tuniforme{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'tienda/css/tienda.css' %}">
+<!-- Header del Catálogo -->
+<div class="bg-gradient-to-br from-primary-600 to-primary-800 py-12 md:py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Catálogo de Uniformes</h1>
+    <p class="text-primary-100 text-lg md:text-xl max-w-2xl mx-auto">
+      Encuentra la mejor calidad para el colegio de tus hijos.
+    </p>
+  </div>
+</div>
 
-<section class="layout">
-  <div class="head">
-    <section class="py-5 text-center container">
-      <div class="row py-lg-5">
-        <div class="col-lg-6 col-md-8 mx-auto ">
-          <h1 class="fw-light">Nuestra Tienda</h1>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="lg:grid lg:grid-cols-4 lg:gap-x-8">
+    
+    <!-- Sidebar de Filtros -->
+    <div class="hidden lg:block space-y-8">
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-24">
+        <h3 class="text-lg font-medium text-gray-900 flex items-center gap-2 mb-6">
+          <svg class="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+          Filtros
+        </h3>
+        
+        <form method="get" id="filterFormDesktop" class="space-y-6">
+          <!-- Colegio -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Colegio</label>
+            <select name="cat_colegio" onchange="this.form.submit()" class="bg-white border text-gray-900 border-gray-300 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+              <option value="">Todos los colegios</option>
+              {% for categoria in categorias_colegio %}
+                <option value="{{ categoria.id }}" {% if request.GET.cat_colegio == categoria.id|stringformat:"s" %}selected{% endif %}>
+                  {{ categoria.nombre }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Tipo -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Prenda</label>
+            <select name="cat_tipo" onchange="this.form.submit()" class="bg-white border text-gray-900 border-gray-300 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+              <option value="">Todos los tipos</option>
+              {% for categoria in categorias_tipo %}
+                <option value="{{ categoria.id }}" {% if request.GET.cat_tipo == categoria.id|stringformat:"s" %}selected{% endif %}>
+                  {{ categoria.nombre }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Género -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Género</label>
+            <select name="cat_sexo" onchange="this.form.submit()" class="bg-white border text-gray-900 border-gray-300 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+              <option value="">Todos</option>
+              {% for categoria in categorias_sexo %}
+                <option value="{{ categoria.id }}" {% if request.GET.cat_sexo == categoria.id|stringformat:"s" %}selected{% endif %}>
+                  {{ categoria.nombre }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          {% if request.GET.cat_colegio or request.GET.cat_tipo or request.GET.cat_sexo %}
+            <a href="{% url 'nstienda:tienda' %}" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer text-center">
+              Limpiar Filtros
+            </a>
+          {% endif %}
+        </form>
+
+        <div class="mt-8 pt-8 border-t border-gray-200">
+           <p class="text-sm text-gray-500">Total productos: <span class="font-bold text-gray-900">{{ productos.paginator.count }}</span></p>
         </div>
       </div>
-    </section>
-  </div>
+    </div>
 
-  <div class="container">
-    <div class="row">
-      {% for producto in productos %}
-        <div class="col-md-3">
-          <div class="card h-100">
-            {% if producto.imagen %}
-              <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
-            {% else %}
-              <img src="{% static 'tienda/img/nodisponible.png' %}" class="card-img-top" alt="Imagen Predeterminada">
-            {% endif %}
-            <div class="card-body d-flex flex-column">
-              <h5 class="card-title">{{ producto.nombre }}</h5>
-              <p class="card-text">{{ producto.descripcion }}</p>
-              <p class="card-text">Precio: ${{ producto.precio }}</p>
-              <p class="card-text">Stock disponible: {{ producto.stock }}</p>
-              <div class="mt-auto">
-                {% if user.is_authenticated %}
-                  {% if producto.stock > 0 %}
-                    <a href="{% url 'carro:agregar' producto.id %}" class="btn btn-primary">Agregar al carro</a>
-                  {% else %}
-                    <button class="btn btn-secondary" disabled>Sin stock</button>
-                  {% endif %}
+    <!-- Filtros Móvil (Accordion) -->
+    <div x-data="{ open: false }" class="lg:hidden mb-6">
+      <button @click="open = !open" type="button" class="w-full bg-white border border-gray-300 rounded-md shadow-sm px-4 py-3 flex items-center justify-between text-sm font-medium text-gray-700 hover:bg-gray-50" aria-controls="filter-section-mobile" aria-expanded="false">
+        <span class="flex items-center">
+          <svg class="mr-2 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+          Filtros
+        </span>
+        <svg :class="{'rotate-180': open}" class="h-5 w-5 text-gray-400 transform transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+      
+      <div x-show="open" class="mt-4 bg-white p-4 rounded-lg shadow-lg border border-gray-100" style="display: none;">
+        <form method="get" id="filterFormMobile" class="space-y-4">
+           <!-- (Mismos selects que desktop, simplificados) -->
+           <select name="cat_colegio" onchange="this.form.submit()" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+              <option value="">Colegio...</option>
+              {% for categoria in categorias_colegio %}
+                <option value="{{ categoria.id }}" {% if request.GET.cat_colegio == categoria.id|stringformat:"s" %}selected{% endif %}>{{ categoria.nombre }}</option>
+              {% endfor %}
+           </select>
+           <select name="cat_tipo" onchange="this.form.submit()" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+              <option value="">Tipo...</option>
+              {% for categoria in categorias_tipo %}
+                <option value="{{ categoria.id }}" {% if request.GET.cat_tipo == categoria.id|stringformat:"s" %}selected{% endif %}>{{ categoria.nombre }}</option>
+              {% endfor %}
+           </select>
+           <select name="cat_sexo" onchange="this.form.submit()" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+              <option value="">Género...</option>
+              {% for categoria in categorias_sexo %}
+                <option value="{{ categoria.id }}" {% if request.GET.cat_sexo == categoria.id|stringformat:"s" %}selected{% endif %}>{{ categoria.nombre }}</option>
+              {% endfor %}
+           </select>
+        </form>
+      </div>
+    </div>
+
+    <!-- Grid de Productos -->
+    <div class="mt-6 lg:mt-0 lg:col-span-3">
+      {% if productos %}
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 p-4 flex justify-between items-center">
+            <span class="text-sm text-gray-500">Mostrando <span class="font-medium text-gray-900">{{ productos|length }}</span> de {{ productos.paginator.count }} resultados</span>
+        </div>
+
+        <div class="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:gap-x-8">
+          {% for producto in productos %}
+            <div class="group relative bg-white border border-gray-200 rounded-2xl flex flex-col overflow-hidden hover:shadow-xl hover:border-primary-100 transition-all duration-300">
+              <div class="aspect-w-1 aspect-h-1 bg-gray-200 group-hover:opacity-75 relative overflow-hidden h-64">
+                 {% if producto.imagen %}
+                  <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="w-full h-full object-center object-cover transform transition-transform duration-500 group-hover:scale-110">
                 {% else %}
-                  <a href="{% url 'nsusuario:login' %}" class="btn btn-primary">Agregar al carro</a>
+                  <div class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
+                      <svg class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                  </div>
+                {% endif %}
+                
+                <!-- Badges -->
+                {% if producto.stock <= 0 %}
+                    <span class="absolute top-2 right-2 bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded">Agotado</span>
+                {% elif producto.stock < 10 %}
+                    <span class="absolute top-2 right-2 bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded">¡Pocos!</span>
                 {% endif %}
               </div>
+              
+              <div class="flex-1 p-4 space-y-2 flex flex-col">
+                <h3 class="text-lg font-bold text-gray-900 line-clamp-2 min-h-[3.5rem]">
+                  {{ producto.nombre }}
+                </h3>
+                <p class="text-sm text-gray-500 line-clamp-2 flex-grow">
+                   {{ producto.descripcion }}
+                </p>
+                
+                <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-4">
+                  <p class="text-xl font-extrabold text-primary-600">${{ producto.precio|floatformat:0 }}</p>
+                  
+                  <div class="flex items-center text-xs text-gray-500">
+                    <span class="h-2 w-2 rounded-full mr-1 {% if producto.stock > 10 %}bg-green-500{% elif producto.stock > 0 %}bg-yellow-500{% else %}bg-red-500{% endif %}"></span>
+                    {{ producto.stock }} stock
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  {% if user.is_authenticated %}
+                    {% if producto.stock > 0 %}
+                      <a href="{% url 'carro:agregar' producto.id %}" class="w-full flex items-center justify-center rounded-lg border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors">
+                        <svg class="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        Agregar
+                      </a>
+                    {% else %}
+                       <button disabled class="w-full flex items-center justify-center rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">
+                        Sin Stock
+                      </button>
+                    {% endif %}
+                  {% else %}
+                    <a href="{% url 'nsusuario:login' %}" class="w-full flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition-colors">
+                      Login para Comprar
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
             </div>
+          {% endfor %}
+        </div>
+        
+        <!-- Paginación -->
+        {% if productos.has_other_pages %}
+        <nav class="border-t border-gray-200 px-4 flex items-center justify-between sm:px-0 mt-10">
+          <div class="-mt-px w-0 flex-1 flex">
+            {% if productos.has_previous %}
+              <a href="?page={{ productos.previous_page_number }}{% if request.GET.cat_colegio %}&cat_colegio={{ request.GET.cat_colegio }}{% endif %}{% if request.GET.cat_tipo %}&cat_tipo={{ request.GET.cat_tipo }}{% endif %}{% if request.GET.cat_sexo %}&cat_sexo={{ request.GET.cat_sexo }}{% endif %}" class="border-t-2 border-transparent pt-4 pr-1 inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                <svg class="mr-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Anterior
+              </a>
+            {% endif %}
+          </div>
+          <div class="hidden md:-mt-px md:flex">
+             {% for num in productos.paginator.page_range %}
+               {% if productos.number == num %}
+                 <a href="#" class="border-primary-500 text-primary-600 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium" aria-current="page">{{ num }}</a>
+               {% elif num > productos.number|add:'-3' and num < productos.number|add:'3' %}
+                 <a href="?page={{ num }}{% if request.GET.cat_colegio %}&cat_colegio={{ request.GET.cat_colegio }}{% endif %}{% if request.GET.cat_tipo %}&cat_tipo={{ request.GET.cat_tipo }}{% endif %}{% if request.GET.cat_sexo %}&cat_sexo={{ request.GET.cat_sexo }}{% endif %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium">{{ num }}</a>
+               {% endif %}
+             {% endfor %}
+          </div>
+          <div class="-mt-px w-0 flex-1 flex justify-end">
+             {% if productos.has_next %}
+              <a href="?page={{ productos.next_page_number }}{% if request.GET.cat_colegio %}&cat_colegio={{ request.GET.cat_colegio }}{% endif %}{% if request.GET.cat_tipo %}&cat_tipo={{ request.GET.cat_tipo }}{% endif %}{% if request.GET.cat_sexo %}&cat_sexo={{ request.GET.cat_sexo }}{% endif %}" class="border-t-2 border-transparent pt-4 pl-1 inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                Siguiente
+                <svg class="ml-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+              </a>
+            {% endif %}
+          </div>
+        </nav>
+        {% endif %}
+
+      {% else %}
+        <!-- Estado Vacío -->
+        <div class="text-center py-24 bg-white rounded-lg shadow-sm border border-gray-200">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+          </svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">No hay productos</h3>
+          <p class="mt-1 text-sm text-gray-500">Intenta cambiar los filtros seleccionados.</p>
+          <div class="mt-6">
+            <a href="{% url 'nstienda:tienda' %}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+              Ver todos los productos
+            </a>
           </div>
         </div>
-      {% endfor %}
-    </div>
-
-    <!-- Controles de Paginación -->
-    <div class="pagination-container mt-4">
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-          {% if productos.has_previous %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ productos.previous_page_number }}{% if request.GET.cat_colegio %}&cat_colegio={{ request.GET.cat_colegio }}{% endif %}{% if request.GET.cat_tipo %}&cat_tipo={{ request.GET.cat_tipo }}{% endif %}{% if request.GET.cat_sexo %}&cat_sexo={{ request.GET.cat_sexo }}{% endif %}" aria-label="Anterior">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-          {% else %}
-            <li class="page-item disabled">
-              <a class="page-link" href="#" aria-label="Anterior">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-          {% endif %}
-
-          {% for num in productos.paginator.page_range %}
-            {% if productos.number == num %}
-              <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
-            {% elif num > productos.number|add:'-3' and num < productos.number|add:'3' %}
-              <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.GET.cat_colegio %}&cat_colegio={{ request.GET.cat_colegio }}{% endif %}{% if request.GET.cat_tipo %}&cat_tipo={{ request.GET.cat_tipo }}{% endif %}{% if request.GET.cat_sexo %}&cat_sexo={{ request.GET.cat_sexo }}{% endif %}">{{ num }}</a></li>
-            {% endif %}
-          {% endfor %}
-
-          {% if productos.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ productos.next_page_number }}{% if request.GET.cat_colegio %}&cat_colegio={{ request.GET.cat_colegio }}{% endif %}{% if request.GET.cat_tipo %}&cat_tipo={{ request.GET.cat_tipo }}{% endif %}{% if request.GET.cat_sexo %}&cat_sexo={{ request.GET.cat_sexo }}{% endif %}" aria-label="Siguiente">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          {% else %}
-            <li class="page-item disabled">
-              <a class="page-link" href="#" aria-label="Siguiente">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          {% endif %}
-        </ul>
-      </nav>
+      {% endif %}
     </div>
   </div>
-
-  <div class="carro">
-    <div>
-      <h2>Filtrar por categoría</h2>
-      <form method="get">
-          <select name="cat_colegio">
-              <option value="">Todas las categorías de colegio</option>
-              {% for categoria in categorias_colegio %}
-                  <option value="{{ categoria.id }}" {% if request.GET.cat_colegio == categoria.id|stringformat:"s" %}selected{% endif %}>
-                      {{ categoria.nombre }}
-                  </option>
-              {% endfor %}
-          </select>
-          <select name="cat_tipo">
-              <option value="">Todas las categorías de tipo</option>
-              {% for categoria in categorias_tipo %}
-                  <option value="{{ categoria.id }}" {% if request.GET.cat_tipo == categoria.id|stringformat:"s" %}selected{% endif %}>
-                      {{ categoria.nombre }}
-                  </option>
-              {% endfor %}
-          </select>
-          <select name="cat_sexo">
-              <option value="">Todas las categorías de sexo</option>
-              {% for categoria in categorias_sexo %}
-                  <option value="{{ categoria.id }}" {% if request.GET.cat_sexo == categoria.id|stringformat:"s" %}selected{% endif %}>
-                      {{ categoria.nombre }}
-                  </option>
-              {% endfor %}
-          </select>
-          <button type="submit">Filtrar</button>
-      </form>
-    </div>
-
-    <!-- carrito/templates/carrito/widget_carro.html: Incluir widget del carro -->
-    {% include "carrito/widget_carro.html" %}
-  </div>
-</section>
-
+</div>
 {% endblock %}
