@@ -160,8 +160,8 @@ TRANSBANK_CONFIG = {
     'commerce_code': os.getenv('TRANSBANK_API_KEY', '597055555532'),
     'api_key': os.getenv('TRANSBANK_API_SECRET', '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C'),
     'environment': os.getenv('TRANSBANK_ENVIRONMENT', 'integration'),
-    'return_url': os.getenv('TRANSBANK_RETURN_URL', 'https://tuniforme.onrender.com/pedidos/transaction/commit'),
-    'final_url': os.getenv('TRANSBANK_FINAL_URL', 'https://tuniforme.onrender.com/pedidos/transaction/final'),
+    'return_url': os.getenv('TRANSBANK_RETURN_URL', 'https://tuniforme-541716295092.us-central1.run.app/pedidos/transaction/commit'),
+    'final_url': os.getenv('TRANSBANK_FINAL_URL', 'https://tuniforme-541716295092.us-central1.run.app/pedidos/transaction/final'),
 }
 
 # Security settings for production
@@ -181,8 +181,14 @@ if not DEBUG:
     X_FRAME_OPTIONS = 'DENY'
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_BROWSER_XSS_FILTER = True
+    SECURE_REFERRER_POLICY = 'same-origin'
+
+    # CSRF Trusted Origins (Vital for Cloud Run)
+    CSRF_TRUSTED_ORIGINS = [f'https://{host}' for host in ALLOWED_HOSTS if '*' not in host]
 
 # Logging configuration
+# En Cloud Run, los logs deben ir a STDOUT/STDERR para ser capturados por Google Cloud Logging.
+# Los archivos locales son efímeros y no persisten.
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -192,59 +198,44 @@ LOGGING = {
             'style': '{',
         },
         'simple': {
-            'format': '{levelname} {asctime} {message}',
+            'format': '{levelname} {message}',
             'style': '{',
-        },
-    },
-    'filters': {
-        'require_debug_false': {
-            'class': 'django.utils.log.RequireDebugFalse',
-        },
-        'require_debug_true': {
-            'class': 'django.utils.log.RequireDebugTrue',
         },
     },
     'handlers': {
         'console': {
-            'level': 'DEBUG' if DEBUG else 'INFO',
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
         },
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'tuniforme.log'),
-            'maxBytes': 1024 * 1024 * 15,  # 15MB
-            'backupCount': 10,
-            'formatter': 'verbose',
-        },
-        'file_error': {
-            'level': 'ERROR',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'error.log'),
-            'maxBytes': 1024 * 1024 * 15,  # 15MB
-            'backupCount': 10,
-            'formatter': 'verbose',
-        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
             'level': 'INFO',
-            'propagate': True,
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
         },
         'pedidos': {
-            'handlers': ['console', 'file', 'file_error'],
-            'level': 'DEBUG' if DEBUG else 'INFO',
+            'handlers': ['console'],
+            'level': 'INFO',
             'propagate': False,
         },
         'tienda': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
         'usuario': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
