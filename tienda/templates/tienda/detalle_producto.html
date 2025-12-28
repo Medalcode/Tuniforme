@@ -42,7 +42,7 @@
       <div class="flex flex-col-reverse">
         <div class="w-full aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden shadow-sm border border-gray-200">
            {% if producto.imagen %}
-            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="w-full h-full object-center object-cover object-contain p-4 bg-white">
+            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="w-full h-full object-center object-contain p-4 bg-white">
           {% else %}
             <div class="w-full h-full flex items-center justify-center text-gray-400 bg-white">
                 <svg class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -90,13 +90,22 @@
         <div class="mt-10 flex sm:flex-col1">
            {% if user.is_authenticated %}
                 {% if producto.stock > 0 %}
-                    <form action="{% url 'carro:agregar' producto.id %}" method="POST" class="w-full">
+                    <form action="{% url 'carro:agregar' producto.id %}" method="POST" class="w-full" x-data="{ loading: false }" @submit="loading = true">
                         {% csrf_token %}
-                        <button type="submit" class="w-full bg-primary-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-primary-500 transition-colors shadow-lg shadow-primary-200">
-                            <svg class="mr-2 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            Agregar al Carrito
+                        <button type="submit" :disabled="loading" class="w-full bg-primary-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-primary-500 transition-all shadow-lg shadow-primary-200 disabled:opacity-75 disabled:cursor-wait">
+                            <span x-show="!loading" class="flex items-center">
+                                <svg class="mr-2 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                Agregar al Carrito
+                            </span>
+                            <span x-show="loading" x-cloak class="flex items-center">
+                                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Procesando...
+                            </span>
                         </button>
                     </form>
                 {% else %}

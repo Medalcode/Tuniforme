@@ -1,31 +1,95 @@
-<!-- pedidos/templates/pedidos/email_pedido.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Confirmación de pedido</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Pedido - Tuniforme</title>
+    <style>
+        /* Reset básico para clientes de correo */
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 0; background-color: #f3f4f6; color: #111827; }
+        .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; }
+        .header { background-color: #2563eb; padding: 24px; text-align: center; }
+        .header h1 { color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 1px; }
+        .content { padding: 32px 24px; }
+        .order-info { margin-bottom: 24px; border-bottom: 2px solid #e5e7eb; padding-bottom: 16px; }
+        .order-number { font-size: 14px; color: #6b7280; text-transform: uppercase; margin-bottom: 4px; }
+        .order-title { font-size: 24px; font-weight: bold; color: #111827; margin: 0; }
+        .intro-text { color: #4b5563; font-size: 16px; line-height: 24px; margin-bottom: 32px; }
+        .table-container { width: 100%; margin-bottom: 32px; border-collapse: collapse; }
+        .table-header th { text-align: left; padding: 12px 8px; border-bottom: 1px solid #e5e7eb; color: #6b7280; font-size: 12px; text-transform: uppercase; }
+        .table-row td { padding: 16px 8px; border-bottom: 1px solid #f3f4f6; font-size: 14px; color: #111827; }
+        .total-section { background-color: #f9fafb; padding: 20px; border-radius: 8px; text-align: right; }
+        .total-line { font-size: 18px; font-weight: bold; color: #111827; }
+        .footer { background-color: #f9fafb; padding: 24px; text-align: center; font-size: 12px; color: #9ca3af; }
+        .btn { display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 16px; }
+        
+        /* Media Query para móviles */
+        @media only screen and (max-width: 600px) {
+            .content { padding: 16px; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Título del correo -->
-    <h1>Confirmación de pedido</h1>
-    
-    <!-- Saludo al usuario -->
-    <p>Hola {{ usuario }},</p>
-    
-    <!-- Agradecimiento por el pedido -->
-    <p>Gracias por tu pedido. Aquí están los detalles:</p>
-    
-    <!-- Número de pedido -->
-    <h2>Pedido #{{ pedido.id }}</h2>
-    
-    <!-- Lista de detalles del pedido -->
-    <ul>
-        {% for detalle in detalle_pedido %}
-            <!-- Detalle del producto en el pedido -->
-            <li>{{ detalle.cantidad }} x {{ detalle.producto.nombre }} - ${{ detalle.producto.precio }}</li>
-        {% endfor %}
-    </ul>
-    
-    <!-- Total del pedido -->
-    <p>Total: ${{ pedido.total }}</p>
+    <div style="background-color: #f3f4f6; padding: 40px 0;">
+        <div class="container" style="border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+            
+            <!-- Header -->
+            <div class="header">
+                <h1 style="font-family: sans-serif;">TUNIFORME</h1>
+            </div>
+
+            <!-- Content -->
+            <div class="content">
+                <div class="order-info">
+                    <p class="order-number">Pedido #{{ pedido.id }}</p>
+                    <h2 class="order-title">¡Gracias por tu compra!</h2>
+                </div>
+
+                <p class="intro-text">
+                    Hola <strong>{{ usuario }}</strong>,<br>
+                    Hemos recibido tu pedido correctamente. A continuación encontrarás un resumen de tu compra. Estamos preparando tus productos para el envío.
+                </p>
+
+                <!-- Tabla de Productos -->
+                <table class="table-container" width="100%" cellpadding="0" cellspacing="0">
+                    <tr class="table-header">
+                        <th width="60%">Producto</th>
+                        <th width="20%" style="text-align: center;">Cant.</th>
+                        <th width="20%" style="text-align: right;">Precio</th>
+                    </tr>
+                    {% for detalle in detalle_pedido %}
+                    <tr class="table-row">
+                        <td>
+                            <div style="font-weight: bold;">{{ detalle.producto.nombre }}</div>
+                            <div style="font-size: 12px; color: #6b7280;">{{ detalle.producto.sku }}</div>
+                        </td>
+                        <td style="text-align: center;">{{ detalle.cantidad }}</td>
+                        <td style="text-align: right;">${{ detalle.producto.precio|floatformat:0 }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+
+                <!-- Totales -->
+                <div class="total-section">
+                    <div class="total-line">
+                        Total a Pagar: ${{ pedido.total|floatformat:0 }}
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 32px;">
+                    <a href="https://tuniforme-541716295092.us-central1.run.app/usuario/perfil/" class="btn">Ver estado del pedido</a>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>
+                    Si tienes alguna pregunta, responde a este correo o contáctanos en soporte@tuniforme.cl<br>
+                    &copy; 2024 Tuniforme. Todos los derechos reservados.
+                </p>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>
