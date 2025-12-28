@@ -1,36 +1,93 @@
-<!-- raiz/templates/raiz/contacto.html -->
 {% extends 'raiz/base.html' %}
 {% load static %}
 
-{% block title %}Contacto{% endblock %}
+{% block title %}Contáctanos | Tuniforme{% endblock %}
 
 {% block content %}
-<!-- Cargar el archivo CSS específico para el formulario de contacto -->
-<link rel="stylesheet" href="{% static 'usuario/css/estilo_login.css' %}">
-
-<div class="container col-xl-10 col-xxl-8 px-4 py-5">
-  <div class="row align-items-center g-lg-5 py-5">
-    <div class="col-lg-7 text-center text-lg-start">
-      <!-- Título y descripción del formulario de contacto -->
-      <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Vertically centered hero sign-up form</h1>
-      <p class="col-lg-10 fs-4">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
+<div class="bg-white py-16 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-24">
+  <div class="relative max-w-xl mx-auto">
+    <div class="text-center">
+      <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+        Ponte en contacto
+      </h2>
+      <p class="mt-4 text-lg leading-6 text-gray-500">
+        ¿Tienes dudas sobre tallas, envíos o pedidos especiales? Escríbenos y nuestro equipo te responderá a la brevedad.
+      </p>
     </div>
-    
-    <div class="col-md-10 mx-auto col-lg-5">
+    <div class="mt-12">
       
-      <!-- Mostrar mensaje de agradecimiento si el formulario es válido -->
       {% if "valido" in request.GET %}
-      <h1><strong>Gracias por contactarnos</strong></h1>
+      <div class="rounded-md bg-green-50 p-4 mb-6">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm font-medium text-green-800">
+              Mensaje enviado correctamente. Te contactaremos pronto.
+            </p>
+          </div>
+        </div>
+      </div>
       {% endif %}
 
-      <!-- Formulario de contacto -->
-      <form action="{% url 'nsraiz:contacto' %}" method="post" class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
+      <form action="{% url 'nsraiz:contacto' %}" method="post" class="grid grid-cols-1 gap-y-6">
         {% csrf_token %}
-        {{ form.as_table }}
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Enviar</button>
+        
+        <!-- Render manual de campos para aplicar estilos Tailwind -->
+        <!-- Asumiendo campos estándar de contacto: nombre, email, mensaje -->
+        <!-- Si el form es dinámico, usaremos un wrapper genérico como en Registro -->
+        
+        <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+            <div class="sm:col-span-2">
+                 <!-- Hack: Renderear el form de Django pero envolverlo para que los inputs tomen estilo global -->
+                 <div class="space-y-4 django-form-clean">
+                     {{ form.as_p }}
+                 </div>
+            </div>
+        </div>
+
+        <div class="sm:col-span-2">
+          <button type="submit" class="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+            Enviar Mensaje
+          </button>
+        </div>
       </form>
-    
     </div>
   </div>
 </div>
+
+<style>
+/* Estilos para limpiar el output de form.as_p */
+.django-form-clean p {
+    margin-bottom: 1rem;
+}
+.django-form-clean label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151; /* gray-700 */
+    margin-bottom: 0.25rem;
+}
+.django-form-clean input,
+.django-form-clean textarea,
+.django-form-clean select {
+    display: block;
+    width: 100%;
+    border-radius: 0.375rem;
+    border-color: #d1d5db;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    padding: 0.5rem 0.75rem;
+}
+.django-form-clean input:focus,
+.django-form-clean textarea:focus {
+    --tw-ring-color: #3b82f6;
+    border-color: #3b82f6;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), 0 0 0 2px var(--tw-ring-color);
+}
+</style>
 {% endblock %}

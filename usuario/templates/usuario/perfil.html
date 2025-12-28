@@ -1,68 +1,187 @@
-<!-- usuario/templates/usuario/perfil.html -->
 {% extends 'raiz/base.html' %}
 {% load static %}
 
-{% block title %}Perfil de Usuario{% endblock %}
+{% block title %}Mi Perfil | Tuniforme{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>Perfil de Usuario</h2>
-    <!-- Formulario para actualizar perfil de usuario -->
-    <form method="post" action="{% url 'nsusuario:actualizar_perfil' %}">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="email">Correo electrónico:</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+<div class="bg-gray-50 min-h-screen py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header del Perfil -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-8">
+            <div class="bg-gradient-to-r from-primary-600 to-primary-500 px-6 py-8">
+                <div class="flex items-center">
+                    <div class="h-20 w-20 rounded-full bg-white flex items-center justify-center text-primary-600 text-3xl font-bold uppercase ring-4 ring-primary-400/50">
+                        {{ user.email|first }}
+                    </div>
+                    <div class="ml-6 text-white">
+                        <h1 class="text-2xl font-bold">{{ user.first_name }} {{ user.last_name }}</h1>
+                        <p class="text-primary-100">{{ user.email }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="first_name">Nombre:</label>
-            <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}">
+
+        <div class="lg:grid lg:grid-cols-12 lg:gap-x-8">
+            
+            <!-- Columna Izquierda: Datos Personales (Formulario) -->
+            <div class="lg:col-span-4 mb-8 lg:mb-0">
+                <div class="bg-white shadow rounded-lg mb-6">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200 flex justify-between items-center">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                             Datos Personales
+                        </h3>
+                    </div>
+                    <div class="px-4 py-5 sm:p-6">
+                        <form method="post" action="{% url 'nsusuario:actualizar_perfil' %}" class="space-y-4">
+                            {% csrf_token %}
+                            <div>
+                                <label for="first_name" class="block text-sm font-medium text-gray-700">Nombre</label>
+                                <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                            </div>
+
+                            <div>
+                                <label for="last_name" class="block text-sm font-medium text-gray-700">Apellido</label>
+                                <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                            </div>
+
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                                <input type="email" name="email" id="email" value="{{ user.email }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-gray-50 text-gray-500 cursor-not-allowed sm:text-sm" readonly>
+                            </div>
+
+                            <div>
+                                <label for="telefono" class="block text-sm font-medium text-gray-700">Teléfono</label>
+                                <input type="text" name="telefono" id="telefono" value="{{ user.telefono }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-100">
+                                <h4 class="text-xs uppercase tracking-wide text-gray-500 font-semibold mb-3">Dirección de Envío</h4>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <label for="direccion" class="block text-sm font-medium text-gray-700">Calle y Número</label>
+                                        <input type="text" name="direccion" id="direccion" value="{{ user.direccion }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="comuna" class="block text-sm font-medium text-gray-700">Comuna</label>
+                                            <input type="text" name="comuna" id="comuna" value="{{ user.comuna }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                                        </div>
+                                        <div>
+                                            <label for="region" class="block text-sm font-medium text-gray-700">Región</label>
+                                            <input type="text" name="region" id="region" value="{{ user.region }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4">
+                                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+                                    Guardar Cambios
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Zona de Peligro -->
+                <div class="bg-white shadow rounded-lg border border-red-100 overflow-hidden">
+                    <button type="button" onclick="document.getElementById('delete-account-section').classList.toggle('hidden')" class="w-full px-4 py-3 bg-red-50 text-left text-sm font-medium text-red-700 hover:bg-red-100 flex justify-between items-center transition-colors">
+                        <span>Zona de Peligro</span>
+                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                           <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div id="delete-account-section" class="hidden px-4 py-5 sm:p-6 bg-white">
+                        <p class="text-sm text-gray-500 mb-4">
+                            Una vez que elimines tu cuenta, no hay vuelta atrás. Por favor, asegúrate.
+                        </p>
+                         <form method="post" action="{% url 'nsusuario:eliminar_cuenta' %}" onsubmit="return confirm('¿Estás seguro de que quieres eliminar tu cuenta permanentemente?');">
+                            {% csrf_token %}
+                            <button type="submit" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                Eliminar Cuenta Permanentemente
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Mis Pedidos -->
+            <div class="lg:col-span-8">
+                 <div class="bg-white shadow rounded-lg overflow-hidden">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                             Mis Pedidos Recientes
+                        </h3>
+                         <p class="mt-1 max-w-2xl text-sm text-gray-500">Historial de tus compras en Tuniforme.</p>
+                    </div>
+                    
+                    {% with pedidos=user.pedido_set.all|dictsortreversed:"fecha" %}
+                        {% if pedidos %}
+                            <ul role="list" class="divide-y divide-gray-200">
+                                {% for pedido in pedidos %}
+                                <li>
+                                    <div class="px-4 py-4 sm:px-6 hover:bg-gray-50 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <p class="text-sm font-medium text-primary-600 truncate">
+                                                Pedido #{{ pedido.id }}
+                                            </p>
+                                            <div class="ml-2 flex-shrink-0 flex">
+                                                <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {% if pedido.finalizado %}bg-green-100 text-green-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                                                    {% if pedido.finalizado %}Completado{% else %}Pendiente{% endif %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 sm:flex sm:justify-between">
+                                            <div class="sm:flex">
+                                                <p class="flex items-center text-sm text-gray-500">
+                                                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                                                    </svg>
+                                                    {{ pedido.fecha|date:"d M Y, H:i" }}
+                                                </p>
+                                            </div>
+                                            <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                                                    <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd" />
+                                                </svg>
+                                                Total: <span class="font-medium text-gray-900 ml-1">${{ pedido.total|floatformat:0 }}</span>
+                                            </div>
+                                        </div>
+                                         <div class="mt-4">
+                                            <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Detalles</h4>
+                                            <div class="flex flex-wrap gap-2">
+                                                {% for detalle in pedido.detalles.all %}
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                                                        {{ detalle.cantidad }}x {{ detalle.producto.nombre }}
+                                                    </span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="text-center py-12">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                </svg>
+                                <h3 class="mt-2 text-sm font-medium text-gray-900">No has realizado pedidos aún</h3>
+                                <div class="mt-6">
+                                    <a href="{% url 'nstienda:tienda' %}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                                        Ir a la Tienda
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                 </div>
+            </div>
+            
         </div>
-        <div class="form-group">
-            <label for="last_name">Apellido:</label>
-            <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}">
-        </div>
-        <div class="form-group">
-            <label for="phone">Teléfono:</label>
-            <input type="text" class="form-control" id="phone" name="telefono" value="{{ user.telefono }}">
-        </div>
-        <div class="form-group">
-            <label for="address">Dirección:</label>
-            <input type="text" class="form-control" id="address" name="direccion" value="{{ user.direccion }}">
-        </div>
-        <div class="form-group">
-            <label for="region">Región:</label>
-            <input type="text" class="form-control" id="region" name="region" value="{{ user.region }}">
-        </div>
-        <div class="form-group">
-            <label for="comuna">Comuna:</label>
-            <input type="text" class="form-control" id="comuna" name="comuna" value="{{ user.comuna }}">
-        </div>
-        <button type="submit" class="btn btn-primary">Actualizar</button>
-    </form>
-    <!-- Formulario para eliminar cuenta de usuario -->
-    <form method="post" action="{% url 'nsusuario:eliminar_cuenta' %}" class="mt-3">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Eliminar Cuenta</button>
-    </form>
+    </div>
 </div>
-
-<!-- Mostrar mensaje de alerta si la cuenta fue eliminada -->
-{% if cuenta_eliminada %}
-<script>
-    alert("Cuenta eliminada exitosamente");
-</script>
-{% endif %}
-
-<!-- Mostrar mensaje de alerta si el perfil fue actualizado -->
-{% if messages %}
-  {% for message in messages %}
-    {% if message.tags == 'success' %}
-    <script>
-        alert("{{ message }}");
-    </script>
-    {% endif %}
-  {% endfor %}
-{% endif %}
-
 {% endblock %}
